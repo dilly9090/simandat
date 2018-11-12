@@ -38,4 +38,9 @@ class HomeController extends Controller
     {
         return view('pages.program.grafik');
     }
+
+    public function login(Request $request)
+    {
+        return redirect('home');
+    }
 }

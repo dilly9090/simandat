@@ -31,7 +31,7 @@
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="#"><i class="icon-switch"></i> Logout</a></li>
+                    <li><a href="{{url('logout')}}"><i class="icon-switch"></i> Logout</a></li>
                 </ul>
             </li>
         </ul>

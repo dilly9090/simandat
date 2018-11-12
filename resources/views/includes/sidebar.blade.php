@@ -22,7 +22,7 @@
 								<li><a href="{{url('home')}}"><i class="icon-wallet"></i> <span>Anggaran</span></a></li>
 								<li><a href="{{url('home')}}"><i class="icon-notebook"></i> <span>Kegiatan/Fisik</span></a></li>
 								<hr>
-								<li><a href="{{url('home')}}"><i class="icon-switch"></i> <span>Logout</span></a></li>
+								<li><a href={{url('logout')}}><i class="icon-switch"></i> <span>Logout</span></a></li>
 								
 
 							</ul>

@@ -63,7 +63,8 @@
                             </div>
                         </div>
                     </div>
-					<form action="#" style="margin-top:40px;">
+                    <form action="{{url('login-home')}}" style="margin-top:40px;" method="POST">
+                        @csrf
 						<div class="panel panel-body login-form">
 							<div class="text-center">
 								<h5 class="content-group-lg">Silahkan Login Terlebih Dahulu</h5>

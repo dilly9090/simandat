@@ -21,3 +21,9 @@ Auth::routes();
 Route::get('program-persebaran','HomeController@program_persebaran');
 Route::get('program-tabel','HomeController@program_tabel');
 Route::get('program-grafik','HomeController@program_grafik');
+
+Route::post('login-home','HomeController@login');
+
+Route::get('logout',function(){
+    return redirect('login');
+});
