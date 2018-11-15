@@ -25,3 +25,5 @@
 <script type="text/javascript" src="{{asset('js/chartjs/Chart.bundle.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/chartjs/datalabel.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/chartjs/util.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/js/core/libraries/jquery_ui/core.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/js/plugins/forms/selects/selectboxit.min.js')}}"></script>

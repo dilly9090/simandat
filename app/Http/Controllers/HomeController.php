@@ -38,6 +38,14 @@ class HomeController extends Controller
     {
         return view('pages.program.grafik');
     }
+    public function sebaran_peta()
+    {
+        return view('pages.peta.peta');
+    }
+    public function anggaran()
+    {
+        return view('pages.anggaran.anggaran');
+    }
 
     public function login(Request $request)
     {

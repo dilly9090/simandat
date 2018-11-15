@@ -50,14 +50,16 @@
                     <!-- Advanced login -->
                     <div class="row">
                         <div style="text-align:center;width:100%">
-                            <div style="margin:10px auto 50px auto !important;width:700px;padding-bottom:50px;">
-                                <img src="{{asset('assets/images/simandat-logo.png')}}" style="width:100px;float:left">
-                                <div style="float:left;margin-left:20px;margin-top:-10px;">
+							<div style="" class="div-logo">
+								<div class="login-logo">
+									<img src="{{asset('assets/images/simandat-logo.png')}}" style="" >
+								</div>
+                                <div style="" class="login-text">
                                     <div>
-                                        <span style="font-size:60px;">SIMANDAT</span> <span style="font-size:60px;font-weight:600">PSKBS</span>
+                                        <span style="" class="text-simandat">SIMANDAT</span> <span style="" class="text-pskbs">PSKBS</span>
                                     </div>
-                                    <div style="margin-top:-20px;">
-                                        <span style="font-size:25px;">Sistem Informasi Manajemen Data Terpadu</span>
+                                    <div style="margin-top:-10px;">
+                                        <span style="" class="text-sim">Sistem Informasi Manajemen Data Terpadu</span>
                                     </div>
                                 </div>
                             </div>
@@ -94,8 +96,8 @@
                     </form>
                     <div class="row">
                         <div style="text-align:center;width:100%">
-                            <div style="margin:0 auto !important;width:700px;">
-                                <img src="{{asset('assets/images/kemensos_logo.png')}}" style="width:120px;">
+                            <div style="" class="div-logo-kemensos">
+                                <img src="{{asset('assets/images/kemensos_logo.png')}}" style="" class="logo-kemensos">
                                 <div style="">
                                     <div>
                                         <span style="font-size:14px;font-weight:600">Direktorat Perlindungan Sosial Korban Bencana Sosial</span>
@@ -149,5 +151,141 @@
 .panel
 {
     background: transparent !important;
+}
+.login-logo
+{
+	width:100px;
+	float:left;
+	text-align: right;
+}
+.login-logo > img
+{
+	width:100%;
+	float:right;
+	margin-top:10px;
+}
+.text-simandat
+{
+	font-size:60px;
+}
+.text-pskbs
+{
+	font-size:60px;font-weight:600
+}
+.text-sim
+{
+	font-size:25px;
+}
+.logo-kemensos
+{
+	width:120px;
+}
+.div-logo-kemensos
+{
+	margin:0 auto !important;width:700px;
+}
+.div-logo
+{
+	margin:10px auto -10px auto !important;width:700px;padding-bottom:5px;
+}
+.logo-text
+{
+	float:left;margin-left:20px;margin-top:-10px;
+}
+@media screen and (max-width:360px)
+{
+	.login-logo
+	{
+		width:15%;
+		float:left;
+		text-align: right;
+	}
+	.login-logo > img
+	{
+		width:100%;
+		float:right;
+	}
+	.logo-text
+	{
+		float:left;
+		width:85%;
+	}
+	.text-simandat
+	{
+		font-size:36px;
+		margin-top:10px;
+	}
+	.text-pskbs
+	{
+		font-size:36px;font-weight:600;
+		margin-bottom:10px;
+		padding-bottom:10px;
+	}
+	.text-sim
+	{
+		font-size:15px;
+	}
+	.logo-kemensos
+	{
+		width:120px;
+	}
+	.div-logo-kemensos
+	{
+		margin:0 auto !important;width:100%;
+	}
+	.div-logo
+	{
+		width:100%;
+		margin:10px auto 0 auto !important;
+		padding-bottom:10px;
+	}
+}
+@media screen and (max-width:640px)
+{
+	.login-logo
+	{
+		width:15%;
+		float:left;
+		text-align:right;
+	}
+	.login-logo > img
+	{
+		width:100%;
+		float:right;
+	}
+	.logo-text
+	{
+		float:left;
+		width:85%;
+	}
+	.text-simandat
+	{
+		font-size:36px;
+		margin-top:10px;
+	}
+	.text-pskbs
+	{
+		font-size:36px;font-weight:600;
+		margin-bottom:10px;
+		padding-bottom:10px;
+	}
+	.text-sim
+	{
+		font-size:15px;
+	}
+	.logo-kemensos
+	{
+		width:120px;
+	}
+	.div-logo-kemensos
+	{
+		margin:0 auto !important;width:100%;
+	}
+	.div-logo
+	{
+		width:100%;
+		margin:10px auto 0 auto !important;
+		padding-bottom:10px;
+	}
 }
 </style>

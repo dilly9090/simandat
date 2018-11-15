@@ -21,6 +21,8 @@ Auth::routes();
 Route::get('program-persebaran','HomeController@program_persebaran');
 Route::get('program-tabel','HomeController@program_tabel');
 Route::get('program-grafik','HomeController@program_grafik');
+Route::get('sebaran-peta','HomeController@sebaran_peta');
+Route::get('anggaran','HomeController@anggaran');
 
 Route::post('login-home','HomeController@login');
 
