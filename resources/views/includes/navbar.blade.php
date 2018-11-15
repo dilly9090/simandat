@@ -14,7 +14,7 @@
 			<ul class="nav navbar-nav">
 				<li><a class="sidebar-control sidebar-main-toggle hidden-xs"><i class="icon-paragraph-justify3"></i></a></li>
 
-				<li><a href="#" >Regulasi</a></li>
+				<li><a href="{{url('regulasi')}}" >Regulasi</a></li>
 				<li><a href="#" >Data Sarpras</a></li>
 				<li><a href="#" >SDM</a></li>
 				<li><a href="#" >Surat Masuk</a></li>

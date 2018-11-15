@@ -29,3 +29,5 @@ Route::post('login-home','HomeController@login');
 Route::get('logout',function(){
     return redirect('login');
 });
+
+Route::resource('regulasi','RegulasiController');

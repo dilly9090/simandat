@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreateRegulasisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('regulasi', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->integer('level')->default(0)->nullable();
-            $table->integer('flag')->default(0)->nullable();
-            $table->rememberToken();
+            $table->string('code')->nullable();
+            $table->string('title')->nullable();
+            $table->text('desc')->nullable();
+            $table->string('flag')->nullable()->default(1);
+            $table->string('file')->nullable();
             $table->timestamps();
+            $table->softdeletes();
         });
     }
 
@@ -32,6 +32,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('regulasi');
     }
 }
