@@ -23,11 +23,29 @@ Route::get('program-tabel','HomeController@program_tabel');
 Route::get('program-grafik','HomeController@program_grafik');
 Route::get('sebaran-peta','HomeController@sebaran_peta');
 Route::get('anggaran','HomeController@anggaran');
+Route::get('master','HomeController@master');
+Route::get('iku','HomeController@iku');
 
 Route::post('login-home','HomeController@login');
 
 Route::get('logout',function(){
+    Auth::logout();
     return redirect('login');
 });
 
-Route::resource('regulasi','RegulasiController');
+Route::resource('regulasi','RegulasiController')->middleware('auth');
+Route::resource('sarpras','SaranaPrasaranaController')->middleware('auth');
+Route::resource('sdm','SdmController')->middleware('auth');
+Route::resource('surat-masuk','SuratMasukController')->middleware('auth');
+Route::resource('surat-keluar','SuratKeluarController')->middleware('auth');
+Route::resource('master-unit','UnitController')->middleware('auth');
+Route::resource('master-user','UserController')->middleware('auth');
+Route::resource('data-iku','IKUController')->middleware('auth');
+Route::resource('data-anggaran','RealisasiAnggaranController')->middleware('auth');
+
+Route::get('unduh-file/{dir}/{file}','HomeController@unduh');
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+     
+});
+ 

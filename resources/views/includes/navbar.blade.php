@@ -15,10 +15,10 @@
 				<li><a class="sidebar-control sidebar-main-toggle hidden-xs"><i class="icon-paragraph-justify3"></i></a></li>
 
 				<li><a href="{{url('regulasi')}}" >Regulasi</a></li>
-				<li><a href="#" >Data Sarpras</a></li>
-				<li><a href="#" >SDM</a></li>
-				<li><a href="#" >Surat Masuk</a></li>
-				<li><a href="#" >Surat Keluar</a></li>
+				<li><a href="{{url('sarpras')}}" >Data Sarpras</a></li>
+				<li><a href="{{url('sdm')}}" >SDM</a></li>
+				<li><a href="{{url('surat-masuk')}}" >Surat Masuk</a></li>
+				<li><a href="{{url('surat-keluar')}}" >Surat Keluar</a></li>
 			</ul>
 
 			<div class="navbar-right">

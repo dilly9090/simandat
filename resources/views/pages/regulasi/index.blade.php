@@ -60,7 +60,7 @@
                     <tbody>
                         <tr>
                             <td class="text-center">{{$item->code}}</td>
-                            <td class="text-left"><i class="icon-search4" style="cursor:pointer"></i></td>
+                            <td class="text-left"><a href="{{url('unduh-file/'.$item->file)}}"><i class="icon-download" style="cursor:pointer"></i></a></td>
                             <td><div style="font-weight: 600;font-size:14px;">{{$item->title}}</div></td>
                         </tr>
                     </tbody>

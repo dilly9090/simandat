@@ -65,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <form action="{{url('login-home')}}" style="margin-top:40px;" method="POST">
+                    <form action="{{route('login')}}" style="margin-top:40px;" method="POST">
                         @csrf
 						<div class="panel panel-body login-form">
 							<div class="text-center">
@@ -73,15 +73,15 @@
 							</div>
 
 							<div class="form-group has-feedback has-feedback-left">
-								<input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus placeholder="Email" style="color:#004aaa !important;border:1px solid #004aaa !important;">
-								<div class="form-control-feedback">
+								<input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus placeholder="Email" style="color:#004aaa !important;border:1px solid #004aaa !important;padding-left:35px; !important">
+								<div class="form-control-feedback" style="padding:0px 10px !important;">
 									<i class="icon-user text-muted"></i>
 								</div>
 							</div>
 
 							<div class="form-group has-feedback has-feedback-left">
-								<input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="Password" style="color:#004aaa !important;border:1px solid #004aaa !important;">
-								<div class="form-control-feedback">
+								<input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="Password" style="color:#004aaa !important;border:1px solid #004aaa !important;padding-left:35px; !important">
+								<div class="form-control-feedback" style="padding:0px 10px !important;">
 									<i class="icon-lock2 text-muted"></i>
 								</div>
 							</div>

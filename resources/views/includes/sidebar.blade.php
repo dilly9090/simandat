@@ -18,10 +18,11 @@
 									</ul>
 								</li>
 								<li><a href="{{url('sebaran-peta')}}"><i class="icon-map4"></i> <span>Peta</span></a></li>
-								<li><a href="{{url('home')}}"><i class="icon-stack2"></i> <span>IKU</span></a></li>
+								<li><a href="{{url('iku')}}"><i class="icon-stack2"></i> <span>IKU</span></a></li>
 								<li><a href="{{url('anggaran')}}"><i class="icon-wallet"></i> <span>Anggaran</span></a></li>
 								<li><a href="{{url('home')}}"><i class="icon-notebook"></i> <span>Kegiatan/Fisik</span></a></li>
 								<hr>
+								<li><a href={{url('master')}}><i class="icon-list"></i> <span>Master Data</span></a></li>
 								<li><a href={{url('logout')}}><i class="icon-switch"></i> <span>Logout</span></a></li>
 								
 
