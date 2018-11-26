@@ -66,6 +66,7 @@
 
 </body>
 </html>
+@yield('modal')
 @yield('footscript')
 
 <style>
