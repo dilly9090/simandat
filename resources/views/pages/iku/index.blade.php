@@ -125,7 +125,7 @@
                                                             <a class="btn btn-xs btn-info btn-edit" data-toggle="modal" data-target="#modalubah" data-value="{{ $tm->id }}">
                                                                 <i class="icon-pencil"></i>
                                                             </a>
-                                                            <a href="#" class="btn btn-xs btn-danger btn-delete" data-toggle="modal" data-target="#modalhapus" data-value="{{ $tm->id }}">
+                                                            <a href="javascript:modalhapus({{$tm->id}})" class="btn btn-xs btn-danger btn-delete">
                                                                 <i class="icon-trash"></i>
                                                             </a> 
                                                         </div>  
@@ -314,15 +314,12 @@
 					<h4 class="modal-title">Konfirmasi Hapus Data IKU</h4>
 				</div>
 				<div class="modal-body">
-					<h5>Apakah anda yakin akan menghapus data ini?</h5>
+                    <h5>Apakah anda yakin akan menghapus data ini?</h5>
+                    <input type="hidden" name="iddeleted" id="iddeleted">
 				</div>
 				<div class="modal-footer">
 					<button type="button" data-dismiss="modal" class="btn btn-default">Batal</button>
-					<a class="btn btn-danger" onclick="event.preventDefault(); document.getElementById('form-delete').submit();" style="cursor:pointer;">Ya, Saya Yakin</a>
-					<form id="form-delete" method="POST" style="display: none;">
-						@csrf
-						@method('DELETE')
-					</form>
+					<a class="btn btn-danger btn-hapus" onclick="hapus()" style="cursor:pointer;">Ya, Saya Yakin</a>
 				</div>
 			</div>
 		</div>
@@ -331,6 +328,7 @@
 @section('footscript')
     <script type="text/javascript" src="{{asset('assets/js/plugins/forms/selects/bootstrap_select.min.js')}}"></script>
     <script>
+        var APP_URL='{{url("/")}}';
         $(".selectbox").selectpicker({
             
         });
@@ -356,10 +354,23 @@
         })
 
 		// delete action
-        $('#table').on('click', '.btn-delete', function(){
-            var id = $(this).data('value')
-			$('#form-delete').attr('action', "{{ url('data-iku') }}/"+id)			
-        })
+        // $('#table').on('click', '.btn-delete', function(){
+        //     var id = $(this).data('value')
+        //     // alert(id);
+        //     $('#iddeleted').val(2);
+		// 	// $('#form-delete').attr('action', "{{ url('data-iku') }}/"+id)			
+        // })
+        function modalhapus(id)
+        {
+            $('#modalhapus').modal('show');
+            $('#iddeleted').val(id);
+        }
+        function hapus()
+        {
+            var id=$('#iddeleted').val();
+            location.href=APP_URL+'/data-iku-delete/'+id;
+            // alert(id);
+        }
     </script>
 <style>
 .selectbox {

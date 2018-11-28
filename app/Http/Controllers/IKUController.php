@@ -59,6 +59,7 @@ class IKUController extends Controller
     }
     public function destroy($id)
     {
+        // dd($id);
         IKU::destroy($id);
 
         return redirect('iku')
