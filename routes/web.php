@@ -41,6 +41,7 @@ Route::resource('surat-keluar','SuratKeluarController')->middleware('auth');
 Route::resource('master-unit','UnitController')->middleware('auth');
 Route::resource('master-user','UserController')->middleware('auth');
 Route::resource('data-iku','IKUController')->middleware('auth');
+Route::get('data-iku-delete/{id}','IKUController@destroy')->middleware('auth');
 Route::resource('data-anggaran','RealisasiAnggaranController')->middleware('auth');
 
 Route::get('unduh-file/{dir}/{file}','HomeController@unduh');
