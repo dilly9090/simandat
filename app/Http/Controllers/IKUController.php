@@ -77,7 +77,7 @@ class IKUController extends Controller
                 <option>- Pilih -</option>';
                 foreach ($iku as $item)
                 {
-                    echo '<option value="'.$item->id.'">'.$item->sasaran.'</option>';
+                    echo '<option value="'.$item->id.'">'.$item->sasaran.' [ '.$item->target.' - '.$item->satuan.' ]</option>';
                 }
         echo '</select>';
     }
