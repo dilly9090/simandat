@@ -68,48 +68,40 @@
                                 </div>
                             </div>
                         @endif
-						<div class="col-lg-5">
-
-							<!-- Traffic sources -->
-							<div class="panel panel-flat" style="height:450px;">
-								<div class="panel-heading">
-									<h5 class="panel-title">Realisasi Kegiatan/Fisik</h5>
-									
-								</div>
-
-								<div class="container-fluid">
-									<div class="row">
-										<div class="col-md-12" style="padding:0 20px;">
-											<canvas id="myChart1" height="200"></canvas>
-										</div>
-									</div>
-									<div class="row" style="margin-top:20px;">
-										<div class="col-md-12">
-											<b>Total Serapan</b>
-											<h2 style="color:#004aaa;margin-top:5px;">Rp. 31.083.678.500,-</h2>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- /traffic sources -->
-
-						</div>
-
-						<div class="col-lg-7" >
+						
+						<div class="col-lg-12" >
 
 							<!-- Sales stats -->
 							<div class="panel panel-flat" style="height:450px;">
 								<div class="panel-heading">
-									<h5 class="panel-title">Distribusi</h5>
+									<h5 class="panel-title">Realisasi Kegiatan/Fisik</h5>
 								</div>
 
-								<div class="container-fluid">
-									<div class="row">
-										<div class="col-md-12" style="padding:0 20px;">
-											<canvas id="barChart" height="350" width="550"></canvas>
-										</div>
-									</div>
-									
+                                <div class="container-fluid" style="padding:0 20px;">
+                                    @php
+                                        $color=array('#004aaa','#00963e','#ffc300','#96F','#03C','#639');
+                                    @endphp
+                                    @foreach ($dt_iku[0] as $satuan=> $item)
+                                        @php
+                                            $tot=array_sum($item);
+                                            // echo $tot;
+                                            $real=isset($jumlah[0][$satuan]) ? array_sum($jumlah[0][$satuan]) : 0;
+                                            $persen=number_format($real/$tot * 100,2);
+                                        @endphp
+                                        <div class="row" style="margin-bottom:40px;">
+                                            <div class="col-md-10">
+                                                <div class="progress progress-lg" style="height:50px;">
+                                                    <div class="progress-bar" style="width: {{$persen}}%;background:{{$color[array_rand($color)]}};line-height:50px;">
+                                                        <i class="icon-user"></i>
+                                                        <span>1.500 {{$satuan}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-right">
+                                                <h3 style="color:#004aaa;margin-top:10px;">{{$satuan}} - {{$persen}} %</h3>
+                                            </div>
+                                        </div>
+									@endforeach
 								</div>
 							</div>
 							<!-- /sales stats -->
@@ -117,52 +109,17 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-12">
-                            <div class="panel panel-flat">
-								<div class="panel-heading">
-									<h5 class="panel-title"></h5>
-								</div>
-
-								<div class="container-fluid">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Kategori</th>
-                                                <th class="text-right">Distribusi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>001</td>
-                                                <td>Pencegahan Dalam Penanganan Konflik Sosial </td>
-                                                <td class="text-right">Rp. 10.567.987.500,-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>002</td>
-                                                <td>Penanganan Sosial Korban Bencana Sosial Politik</td>
-                                                <td class="text-right">Rp. 567.987.500,-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>003</td>
-                                                <td>Penanganan Sosial Korban Bencana Ekonomi </td>
-                                                <td class="text-right">Rp. 67.987.500,-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>004</td>
-                                                <td>Pemulihan dan Reintegrasi Sosial</td>
-                                                <td class="text-right">Rp. 567.987.500,-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>005</td>
-                                                <td>Layanan Tata Usaha</td>
-                                                <td class="text-right">Rp. 67.987.500,-</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-						        </div>
-						    </div>
-						</div>
+                        @foreach ($keg as $item)                            
+                            <div class="col-md-3">
+                                <div class="panel panel-body border-top-info text-center">
+                                    <h6 class="no-margin text-semibold">{{$item[0]->kegiatan}}</h6>
+                                    
+                                    <button type="button" class="btn bg-blue-700 btn-float btn-float-lg legitRipple" style="margin-top:20px;font-size:30px">{{rupiah(count($item))}}</button>
+                                    
+                                </div>
+                            </div>
+                        @endforeach
+						
 					</div>
                 
 @endsection
@@ -227,10 +184,16 @@
 									</div>
                         </div> 
 						<div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
                                 <div class="form-group">	
-                                    <label>Jumah</label>
-                                    <input type="text" name="jumlah" class="form-control" placeholder="Rp. xxx.xxx.xxx.xxx">
+                                    <label>Jumah Reaalisasi</label>
+                                    <input type="text" name="jumlah" class="form-control" placeholder="">
+                                </div> 
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">	
+                                    <label>Satuan</label>
+                                    <input type="text" name="satuan" class="form-control" placeholder="">
                                 </div> 
                             </div>
                         </div>
@@ -293,10 +256,16 @@
 									</div>
                         </div> 
 						<div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
                                 <div class="form-group">	
-                                    <label>Jumah</label>
-                                    <input type="text" name="jumlah" id="jumlah" class="form-control" placeholder="Rp. xxx.xxx.xxx.xxx">
+                                    <label>Jumah Realisasi</label>
+                                    <input type="text" name="jumlah" id="jumlah" class="form-control" placeholder="">
+                                </div> 
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">	
+                                    <label>Satuan</label>
+                                    <input type="text" name="satuan" id="satuan" class="form-control" placeholder="">
                                 </div> 
                             </div>
                         </div>
@@ -399,71 +368,9 @@
 			$('#form-delete').attr('action', "{{ url('data-realisasi') }}/"+id)			
         })
 
-var ctx = document.getElementById("myChart1").getContext('2d');
-Chart.defaults.global.defaultFontFamily = "Lato";
-Chart.defaults.global.defaultFontSize = 12;
-Chart.defaults.global.defaultFontColor = '#fff';
 
-var dData = {
-    
-    datasets: [
-        {
-            data: [133.3, 300.2],
-            backgroundColor: [
-                "#ffc300",
-                "#004aaa",
-            ]
-        }]
-};
 
-var pieChart = new Chart(ctx, {
-  type: 'pie',
-  data: dData
-});
 
-Chart.defaults.global.defaultFontColor = '#000';
-var ctx2 = document.getElementById("barChart");
-var myChart = new Chart(ctx2, {
-  type: 'bar',
-  data: {
-    labels: ["Pencegahan", "PSKB-SP", "PSKB-E", "Pemulihan", "TU"],
-    datasets: [{
-      label: 'DISTRIBUSI',
-      data: [53.18, 17.40, 10.69, 12.88, 5.19],
-      backgroundColor: [
-        'rgba(0, 74, 170, 1)',
-        'rgba(0, 150, 62, 1)',
-        'rgba(255, 195, 0, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)'
-      ],
-      borderColor: [
-        'rgba(0, 74, 170, 1)',
-        'rgba(0, 150, 62, 1)',
-        'rgba(255, 195, 0, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)'
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    responsive: false,
-    scales: {
-      xAxes: [{
-        ticks: {
-          maxRotation: 90,
-          minRotation: 0
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    }
-  }
-});
 </script>
 <style>
 .selectbox {

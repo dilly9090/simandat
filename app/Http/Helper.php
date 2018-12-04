@@ -20,4 +20,17 @@ function rupiah($angka){
 	return $hasil_rupiah;
  
 }
+function autonumber($num)
+{
+    if($num<10)
+        return '0000'.$num;
+    elseif($num>=10 && $num<100)
+        return '000'.$num;
+    elseif($num>=100 && $num<1000)
+        return '00'.$num;
+    elseif($num>=1000 && $num<10000)
+        return '0'.$num;
+    else
+        return $num;
+}
 ?>

@@ -49,10 +49,48 @@ class HomeController extends Controller
     {
         $iku=IKU::where('status',0)->with('unit')->orderBy('tahun','desc')->orderBy('id_unit')->get();
         $d_iku=$dt_iku=array();
+        $total_anggaran=array();
         foreach($iku as $k=>$v)
         {
             $d_iku[]=$v;
             $dt_iku[$v->unit->id_parent][$v->id_unit][]=$v->anggaran;
+            $total_anggaran[$v->unit->id_parent][$v->sasaran]=$v->anggaran;
+        }
+        // dd($total_anggaran);
+        $unit=Unit::all();
+        $d_unit=array();
+        
+        foreach($unit as $k=>$v)
+        {
+            $d_unit[$v->id_parent][$v->id]=$v;
+            
+        }
+
+        $realisasi=RealisasiAnggaran::with('iku')->get();
+        $d_realisasi=$jlh=array();
+        foreach($realisasi as $k=>$v)
+        {
+            $d_realisasi[$v->id_iku][]=$v;
+            $jlh[$v->iku->id_unit][]=$v->jumlah;
+        }
+        // dd($jlh);
+        return view('pages.anggaran.anggaran')
+                ->with('iku',$d_iku)
+                ->with('dt_iku',$dt_iku)
+                ->with('total_anggaran',$total_anggaran)
+                ->with('unit',$d_unit)
+                ->with('realisasi',$d_realisasi)
+                ->with('jumlah',$jlh);
+    }
+    public function kegiatan_fisik()
+    {
+        $iku=IKU::where('status',0)->with('unit')->orderBy('tahun','desc')->orderBy('id_unit')->get();
+        $d_iku=array();
+        $dt_iku=array();
+        foreach($iku as $k=>$v)
+        {
+            $d_iku[]=$v;
+            $dt_iku[$v->unit->id_parent][trim($v->satuan)][]=$v->target;
         }
         // dd($dt_iku);
         $unit=Unit::all();
@@ -62,46 +100,22 @@ class HomeController extends Controller
             $d_unit[$v->id_parent][$v->id]=$v;
         }
 
-        $realisasi=RealisasiAnggaran::all();
-        $d_realisasi=$jlh=array();
+        $realisasi=KegiatanFisik::with('iku')->get();
+        $d_realisasi=$jlh=$real=array();
+        $keg=$jlh=$real=array();
         foreach($realisasi as $k=>$v)
         {
             $d_realisasi[$v->id_iku][]=$v;
-            $jlh[$v->id_iku][]=$v->jumlah;
+            $keg[str_slug($v->kegiatan)][]=$v;
+            $jlh[$v->iku->unit->id_parent][trim($v->iku->satuan)][]=$v->jumlah;
+            // $jlh[$v->iku->id_unit][]=$v->jumlah;
         }
-        return view('pages.anggaran.anggaran')
+        // dd($jlh);
+        return view('pages.kegiatan-fisik.index')
                 ->with('iku',$d_iku)
                 ->with('dt_iku',$dt_iku)
                 ->with('unit',$d_unit)
-                ->with('realisasi',$d_realisasi)
-                ->with('jumlah',$jlh);
-    }
-    public function kegiatan_fisik()
-    {
-        $iku=IKU::where('status',0)->with('unit')->orderBy('tahun','desc')->orderBy('id_unit')->get();
-        $d_iku=array();
-        foreach($iku as $k=>$v)
-        {
-            $d_iku[]=$v;
-        }
-
-        $unit=Unit::all();
-        $d_unit=array();
-        foreach($unit as $k=>$v)
-        {
-            $d_unit[$v->id_parent][$v->id]=$v;
-        }
-
-        $realisasi=KegiatanFisik::all();
-        $d_realisasi=$jlh=array();
-        foreach($realisasi as $k=>$v)
-        {
-            $d_realisasi[$v->id_iku][]=$v;
-            $jlh[$v->id_iku][]=$v->jumlah;
-        }
-        return view('pages.kegiatan-fisik.index')
-                ->with('iku',$d_iku)
-                ->with('unit',$d_unit)
+                ->with('keg',$keg)
                 ->with('realisasi',$d_realisasi)
                 ->with('jumlah',$jlh);
     }

@@ -46,6 +46,9 @@ Route::get('data-iku-delete/{id}','IKUController@destroy')->middleware('auth');
 Route::resource('data-anggaran','RealisasiAnggaranController')->middleware('auth');
 Route::resource('data-kegiatan-fisik','KegiatanFisikController')->middleware('auth');
 
+Route::post('disposisi-surat-masuk','DisposisiController@diposisi_surat_masuk')->middleware('auth');
+Route::post('disposisi-surat-keluar','DisposisiController@diposisi_surat_keluar')->middleware('auth');
+
 Route::get('unduh-file/{dir}/{file}','HomeController@unduh');
 Route::get('iku-by-unit/{idunit}','IKUController@iku_by_unit');
 

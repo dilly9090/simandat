@@ -71,7 +71,7 @@
 						<div class="col-lg-5">
 
 							<!-- Traffic sources -->
-							<div class="panel panel-flat" style="height:450px;">
+							<div class="panel panel-flat" style="height:500px;">
 								<div class="panel-heading">
 									<h5 class="panel-title">Realisasi Anggaran</h5>
 									
@@ -85,9 +85,33 @@
 									</div>
 									<div class="row" style="margin-top:20px;">
 										<div class="col-md-12">
-											<b>Total Serapan</b>
-											<h2 style="color:#004aaa;margin-top:5px;">Rp. 31.083.678.500,-</h2>
+                                            <b>Total Serapan</b>
+                                            @php
+                                                $total_serapan=0;
+                                            @endphp
+                                            @foreach ($unit[0] as $item)
+                                                @php
+                                                    if(isset($jumlah[$item->id]))
+                                                    {
+                                                        $jlh=array_sum($jumlah[$item->id]);
+                                                    }
+                                                    else {
+                                                        $jlh=0;
+                                                    }
+                                                    $total_serapan+=$jlh;
+                                                @endphp
+                                            @endforeach
+											<h2 style="color:#004aaa;margin-top:5px;">Rp. {{rupiah($total_serapan)}},-</h2>
 										</div>
+										<div class="col-md-12">
+											<b>Total Anggaran</b>
+											<h2 style="color:#004aaa;margin-top:5px;">Rp. {{rupiah(array_sum($total_anggaran[0]))}},-</h2>
+                                        </div>
+                                        @php
+                                            $tol_ang=isset($total_anggaran[0]) ? array_sum($total_anggaran[0]) : 0 ;
+                                            $tol_ser=$total_serapan ;
+                                            $sisa_real=$tol_ang-$tol_ser;
+                                        @endphp
 									</div>
 								</div>
 							</div>
@@ -98,15 +122,15 @@
 						<div class="col-lg-7" >
 
 							<!-- Sales stats -->
-							<div class="panel panel-flat" style="height:450px;">
+							<div class="panel panel-flat" style="height:500px;">
 								<div class="panel-heading">
-									<h5 class="panel-title">Distribusi</h5>
+									<h5 class="panel-title">Distribusi (.000.000)</h5>
 								</div>
 
 								<div class="container-fluid">
 									<div class="row">
 										<div class="col-md-12" style="padding:0 20px;">
-											<canvas id="barChart" height="350" width="550"></canvas>
+											<canvas id="barChart" height="400" width="550"></canvas>
 										</div>
 									</div>
 									
@@ -133,31 +157,33 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>001</td>
-                                                <td>Pencegahan Dalam Penanganan Konflik Sosial </td>
-                                                <td class="text-right">Rp. 10.567.987.500,-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>002</td>
-                                                <td>Penanganan Sosial Korban Bencana Sosial Politik</td>
-                                                <td class="text-right">Rp. 567.987.500,-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>003</td>
-                                                <td>Penanganan Sosial Korban Bencana Ekonomi </td>
-                                                <td class="text-right">Rp. 67.987.500,-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>004</td>
-                                                <td>Pemulihan dan Reintegrasi Sosial</td>
-                                                <td class="text-right">Rp. 567.987.500,-</td>
-                                            </tr>
-                                            <tr>
-                                                <td>005</td>
-                                                <td>Layanan Tata Usaha</td>
-                                                <td class="text-right">Rp. 67.987.500,-</td>
-                                            </tr>
+                                            @php
+                                                $no=1;
+                                                // dd($dt_iku[0]);
+                                                $kat=$angg=array();
+                                            @endphp
+                                            @foreach ($unit[0] as $item)
+                                            @php
+                                                if(isset($jumlah[$item->id]))
+                                                {
+                                                    $jlh=array_sum($jumlah[$item->id]);
+                                                }
+                                                else {
+                                                    $jlh=0;
+                                                }
+                                                $kat[]=$item->singkatan;
+                                                $angg[]=($jlh/1000000);
+                                            @endphp
+                                                <tr>
+                                                    <td>00{{$no}}</td>
+                                                    <td>{{$item->nama_unit}} </td>
+                                                    <td class="text-right">Rp. {{rupiah($jlh)}},-</td>
+                                                </tr> 
+                                                @php
+                                                    $no++;
+                                                @endphp   
+                                            @endforeach
+
                                         </tbody>
                                     </table>
 						        </div>
@@ -405,10 +431,10 @@ Chart.defaults.global.defaultFontSize = 12;
 Chart.defaults.global.defaultFontColor = '#fff';
 
 var dData = {
-    
+    labels: ["Belum Terealisasi","Sudah Terealisasi"],
     datasets: [
         {
-            data: [133.3, 300.2],
+            data: [{{$sisa_real}}, {{$tol_ser}}],
             backgroundColor: [
                 "#ffc300",
                 "#004aaa",
@@ -418,7 +444,18 @@ var dData = {
 
 var pieChart = new Chart(ctx, {
   type: 'pie',
-  data: dData
+  data: dData,
+  options: {
+        tooltips: false,
+        plugins: {
+            datalabels: {
+                    color: "#000000",
+                    formatter: function(value, context) {
+                        return 'Rp. '+value.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1.');
+                    }
+                }
+            }
+        }
 });
 
 Chart.defaults.global.defaultFontColor = '#000';
@@ -426,10 +463,10 @@ var ctx2 = document.getElementById("barChart");
 var myChart = new Chart(ctx2, {
   type: 'bar',
   data: {
-    labels: ["Pencegahan", "PSKB-SP", "PSKB-E", "Pemulihan", "TU"],
+    labels: <?php echo json_encode($kat);?>,
     datasets: [{
-      label: 'DISTRIBUSI',
-      data: [53.18, 17.40, 10.69, 12.88, 5.19],
+      label: '',
+      data: <?php echo json_encode($angg);?>,
       backgroundColor: [
         'rgba(0, 74, 170, 1)',
         'rgba(0, 150, 62, 1)',
@@ -448,6 +485,26 @@ var myChart = new Chart(ctx2, {
     }]
   },
   options: {
+    tooltips: {
+        callbacks: {
+            label: function(tooltipItem, data) {
+                return "Rp." + Number(tooltipItem.yLabel).toFixed(0).replace(/./g, function(c, i, a) {
+                    return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
+                });
+            }
+        }
+    },
+    legend: {
+        display: false
+    },
+    plugins: {
+                    datalabels: {
+                            color: "#000000",
+                            formatter: function(value, context) {
+                                return "Rp."+value.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1.');
+                            }
+                        }
+                    },
     responsive: false,
     scales: {
       xAxes: [{
@@ -458,7 +515,14 @@ var myChart = new Chart(ctx2, {
       }],
       yAxes: [{
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
+            callback: function(value, index, values) {
+              if(parseInt(value) >= 1000){
+                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+              } else {
+                return value;
+              }
+            }
         }
       }]
     }
