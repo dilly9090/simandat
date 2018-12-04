@@ -204,7 +204,7 @@
                                         <select name="id_iku" palceholder="IKU" class="selectbox" style="">
                                             <option>- Pilih -</option>
                                             @foreach ($iku as $item)
-                                            <option value="{{$item->id}}">{{$item->sasaran}}</option>
+                                                <option value="{{$item->id}}">{{$item->sasaran}} [ {{$item->target}} - {{$item->satuan}}]</option>
                                             @endforeach
                                         </select>
                                     </div>
