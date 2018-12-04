@@ -69,4 +69,16 @@ class IKUController extends Controller
     {
         return IKU::find($id);
     }
+
+    public function iku_by_unit($idunit)
+    {
+        $iku=IKU::where('id_unit',$idunit)->with('unit')->get();
+        echo '<select name="id_iku" palceholder="IKU" class="selectbox" style="">
+                <option>- Pilih -</option>';
+                foreach ($iku as $item)
+                {
+                    echo '<option value="'.$item->id.'">'.$item->sasaran.'</option>';
+                }
+        echo '</select>';
+    }
 }

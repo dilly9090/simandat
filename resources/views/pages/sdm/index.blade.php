@@ -81,7 +81,7 @@
                 
             </div>
             <div class="container-fluid">
-                <table class="table table-basic table-striped" id="table">
+                <table class="table table-basic table-striped table-data" id="table">
                     <thead>
                         <tr>
                             <th class="text-center">No</th>
@@ -96,11 +96,11 @@
                 @php
                     $no=1;
                 @endphp
+                <tbody>
 				@foreach ($sdm as $item)
-                    <tbody>
                         <tr>
                             <td class="text-center">{{$no}}</td>
-                            <td class="text-center">{{$item->nip}}</td>
+                            <td class="text-center"><div style="width:150px;">{{$item->nip}}</div></td>
                             <td><div style="font-weight: 600;font-size:14px;">{{$item->nama_lengkap}}</div></td>
                             <td><div style="font-weight: 600;font-size:14px;">{{$item->golongan}}</div></td>
                             <td><div style="font-weight: 600;font-size:14px;">{{$item->pangkat}}</div></td>
@@ -116,11 +116,11 @@
                                 </div>  
                             </td>
                         </tr>
-                    </tbody>
-                @php
+                        @php
                     $no++;
-                @endphp
+                    @endphp
                 @endforeach
+                </tbody>
                 </table>
             </div>
         </div>

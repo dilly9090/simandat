@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\IKU;
 use App\Models\Unit;
 use App\Models\RealisasiAnggaran;
+use App\Models\KegiatanFisik;
 class HomeController extends Controller
 {
     /**
@@ -46,18 +47,19 @@ class HomeController extends Controller
     }
     public function anggaran()
     {
-        $iku=IKU::where('status',0)->orderBy('tahun','desc')->orderBy('id_unit')->get();
-        $d_iku=array();
+        $iku=IKU::where('status',0)->with('unit')->orderBy('tahun','desc')->orderBy('id_unit')->get();
+        $d_iku=$dt_iku=array();
         foreach($iku as $k=>$v)
         {
             $d_iku[]=$v;
+            $dt_iku[$v->unit->id_parent][$v->id_unit][]=$v->anggaran;
         }
-
+        // dd($dt_iku);
         $unit=Unit::all();
         $d_unit=array();
         foreach($unit as $k=>$v)
         {
-            $d_unit[$v->nama_unit]=$v;
+            $d_unit[$v->id_parent][$v->id]=$v;
         }
 
         $realisasi=RealisasiAnggaran::all();
@@ -69,10 +71,41 @@ class HomeController extends Controller
         }
         return view('pages.anggaran.anggaran')
                 ->with('iku',$d_iku)
+                ->with('dt_iku',$dt_iku)
                 ->with('unit',$d_unit)
                 ->with('realisasi',$d_realisasi)
                 ->with('jumlah',$jlh);
     }
+    public function kegiatan_fisik()
+    {
+        $iku=IKU::where('status',0)->with('unit')->orderBy('tahun','desc')->orderBy('id_unit')->get();
+        $d_iku=array();
+        foreach($iku as $k=>$v)
+        {
+            $d_iku[]=$v;
+        }
+
+        $unit=Unit::all();
+        $d_unit=array();
+        foreach($unit as $k=>$v)
+        {
+            $d_unit[$v->id_parent][$v->id]=$v;
+        }
+
+        $realisasi=KegiatanFisik::all();
+        $d_realisasi=$jlh=array();
+        foreach($realisasi as $k=>$v)
+        {
+            $d_realisasi[$v->id_iku][]=$v;
+            $jlh[$v->id_iku][]=$v->jumlah;
+        }
+        return view('pages.kegiatan-fisik.index')
+                ->with('iku',$d_iku)
+                ->with('unit',$d_unit)
+                ->with('realisasi',$d_realisasi)
+                ->with('jumlah',$jlh);
+    }
+
     public function master()
     {
         return view('pages.master.index');
@@ -83,10 +116,12 @@ class HomeController extends Controller
         $d_unit=array();
         foreach($unit as $k=>$v)
         {
-            $d_unit[$v->nama_unit]=$v;
+            $d_unit[$v->id_parent][$v->id]=$v;
         }
 
+
         $iku=IKU::where('status',0)->orderBy('tahun','desc')->get();
+    
         $d_iku=array();
         foreach($iku as $k=>$v)
         {

@@ -21,7 +21,7 @@
     <div class="breadcrumb-line">
         <ul class="breadcrumb">
             <li><a href="{{url('/')}}"><i class="icon-home2 position-left"></i> Beranda</a></li>
-            <li class="active">Anggaran</li>
+            <li class="active">Kegiatan/Fisik</li>
         </ul>
         <ul class="breadcrumb-elements">
             <li class="dropdown">
@@ -73,7 +73,7 @@
 							<!-- Traffic sources -->
 							<div class="panel panel-flat" style="height:450px;">
 								<div class="panel-heading">
-									<h5 class="panel-title">Realisasi Anggaran</h5>
+									<h5 class="panel-title">Realisasi Kegiatan/Fisik</h5>
 									
 								</div>
 
@@ -175,7 +175,7 @@
 					<h4 class="modal-title">Tambah Data Realisasi</h4>
 				</div>
 				<div class="modal-body">
-					<form action="{{ route('data-anggaran.store') }}" method="POST" enctype="multipart/form-data">
+					<form action="{{ route('data-kegiatan-fisik.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         
                         <div class="row">

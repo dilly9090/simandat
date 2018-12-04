@@ -18,13 +18,14 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 //Program
-Route::get('program-persebaran','HomeController@program_persebaran');
-Route::get('program-tabel','HomeController@program_tabel');
-Route::get('program-grafik','HomeController@program_grafik');
-Route::get('sebaran-peta','HomeController@sebaran_peta');
-Route::get('anggaran','HomeController@anggaran');
-Route::get('master','HomeController@master');
-Route::get('iku','HomeController@iku');
+Route::get('program-persebaran','HomeController@program_persebaran')->middleware('auth');
+Route::get('program-tabel','HomeController@program_tabel')->middleware('auth');
+Route::get('program-grafik','HomeController@program_grafik')->middleware('auth');
+Route::get('sebaran-peta','HomeController@sebaran_peta')->middleware('auth');
+Route::get('anggaran','HomeController@anggaran')->middleware('auth');
+Route::get('master','HomeController@master')->middleware('auth');
+Route::get('iku','HomeController@iku')->middleware('auth');
+Route::get('kegiatan-fisik','HomeController@kegiatan_fisik')->middleware('auth');
 
 Route::post('login-home','HomeController@login');
 
@@ -43,8 +44,10 @@ Route::resource('master-user','UserController')->middleware('auth');
 Route::resource('data-iku','IKUController')->middleware('auth');
 Route::get('data-iku-delete/{id}','IKUController@destroy')->middleware('auth');
 Route::resource('data-anggaran','RealisasiAnggaranController')->middleware('auth');
+Route::resource('data-kegiatan-fisik','KegiatanFisikController')->middleware('auth');
 
 Route::get('unduh-file/{dir}/{file}','HomeController@unduh');
+Route::get('iku-by-unit/{idunit}','IKUController@iku_by_unit');
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
      

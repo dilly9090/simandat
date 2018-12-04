@@ -80,14 +80,17 @@
     <div class="col-lg-12">
         
         <div class="panel-group panel-group-control panel-group-control-left content-group-lg" id="accordion-control-left">
-                    @foreach ($unit as $item)
-                        <div class="panel panel-white">
-                            <div class="panel-heading">
+                    @php
+                        $no=1;
+                    @endphp
+                    @foreach ($unit[0] as $idx=>$item)
+                        <div class="panel">
+                            <div class="panel-heading bg-primary">
                                 <h6 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion-control-right" href="#accordion-control-right-group1">{{$item->nama_unit}}</a>
+                                    <a data-toggle="collapse" class="{{$idx!=1 ? 'collapsed' : ''}}" data-parent="#accordion-control-right" href="#accordion-control-right-group{{$idx}}"><b>{{$item->id_parent==0 ? 'Subdit' : ''}}</b> - {{$item->nama_unit}} <b style="color:black">( {{isset($iku[$item->id]) ? count($iku[($item->id)]) : 0}} )</b></a>
                                 </h6>
                             </div>
-                            <div id="accordion-control-right-group1" class="panel-collapse collapse in">
+                            <div id="accordion-control-right-group{{$idx}}" class="panel-collapse collapse {{$no==1 ? 'in' :''}}">
                                 <div class="panel-body">
                                     <table class="table table-basic table-striped table-bordered" id="table">
                                         <thead>
@@ -104,14 +107,14 @@
                                     @php
                                         $no=1;
                                     @endphp
-                                    @if ( !isset($iku[str_slug($item->nama_unit)]) )
+                                    @if ( !isset($iku[($item->id)]) )
                                         <tbody>
                                             <tr>
                                                 <td colspan="7" class="text-center">Data Belum Tersedia</td>
                                             </tr>
                                         </tbody>
                                     @else
-                                        @foreach ($iku[str_slug($item->nama_unit)] as $tm)
+                                        @foreach ($iku[($item->id)] as $tm)
                                             <tbody>
                                                 <tr>
                                                     <td class="text-center">{{$no}}</td>
@@ -141,6 +144,73 @@
                                 </div>
                             </div>
                         </div>
+
+                        @php
+                            $nosub=1;
+                        @endphp
+                        @if (isset($unit[$item->id]))
+                            @foreach ($unit[$item->id] as $itm)
+                                <div class="panel panel-white">
+                                    <div class="panel-heading">
+                                        <h6 class="panel-title">
+                                            <a data-toggle="collapse" class="collapsed" data-parent="#accordion-control-right" href="#accordion-control-right-group_{{$nosub}}">{{'Subdit '.$item->nama_unit.' - '.$itm->nama_unit}} <b style="color:blue">( {{isset($iku[$itm->id]) ? count($iku[($itm->id)]) : 0}} )</b></a>
+                                        </h6>
+                                    </div>
+                                    <div id="accordion-control-right-group_{{$nosub}}" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <table class="table table-basic table-striped table-bordered" id="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-left">No</th>
+                                                        <th class="text-center">Tahun</th>
+                                                        <th>Sasaran</th>
+                                                        <th>Indikator Kinerja</th>
+                                                        <th>Target</th>
+                                                        <th>Anggaran</th>
+                                                        <th>#</th>
+                                                    </tr>
+                                                </thead>
+                                            
+                                            @if ( !isset($iku[($itm->id)]) )
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">Data Belum Tersedia</td>
+                                                    </tr>
+                                                </tbody>
+                                            @else
+                                                @foreach ($iku[($itm->id)] as $tmm)
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-right">{{$nosub}}</td>
+                                                            <td class="text-center">{{$tmm->tahun}}</td>
+                                                            <td>{{$tmm->sasaran}}</td>
+                                                            <td>{{$tmm->indikator}}</td>
+                                                            <td>{{rupiah($tmm->target)}} {{$tmm->satuan}}</td>
+                                                            <td class="text-right">Rp.{{rupiah($tmm->anggaran)}}</td>
+                                                            <td>
+                                                                <div style="width:100px;">
+                                                                    <a class="btn btn-xs btn-info btn-edit" data-toggle="modal" data-target="#modalubah" data-value="{{ $tmm->id }}">
+                                                                        <i class="icon-pencil"></i>
+                                                                    </a>
+                                                                    <a href="javascript:modalhapus({{$tmm->id}})" class="btn btn-xs btn-danger btn-delete">
+                                                                        <i class="icon-trash"></i>
+                                                                    </a> 
+                                                                </div>  
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                @php
+                                                    $nosub++;
+                                                @endphp
+                                                @endforeach
+                                            @endif
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+
                     @endforeach
         </div>
         
@@ -171,8 +241,13 @@
                                     <label>Unit Kerja</label>
                                     <select name="id_unit" id="" palceholder="Unit" class="selectbox" style="">
                                         <option>- Pilih -</option>
-                                        @foreach ($unit as $item)
-                                            <option value="{{$item->nama_unit}}">{{$item->nama_unit}}</option>
+                                        @foreach ($unit[0] as $item)
+                                            <option value="{{$item->id}}">{{$item->nama_unit}}</option>
+                                            @if (isset($unit[$item->id]))
+                                                @foreach ($unit[$item->id] as $im)
+                                                    <option value="{{$im->id}}">- {{$im->nama_unit}}</option>
+                                                @endforeach
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>  
@@ -243,8 +318,13 @@
                                     <label>Unit Kerja</label>
                                     <select name="id_unit" id="id_unit" palceholder="Unit" class="selectbox" style="">
                                         <option>- Pilih -</option>
-                                        @foreach ($unit as $item)
-                                            <option value="{{$item->nama_unit}}">{{$item->nama_unit}}</option>
+                                        @foreach ($unit[0] as $item)
+                                            <option value="{{$item->id}}">{{$item->nama_unit}}</option>
+                                            @if (isset($unit[$item->id]))
+                                                @foreach ($unit[$item->id] as $im)
+                                                    <option value="{{$im->id}}">- {{$im->nama_unit}}</option>
+                                                @endforeach
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>  

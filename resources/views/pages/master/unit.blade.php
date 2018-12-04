@@ -80,6 +80,8 @@
                         <tr>
                             <th class="text-center">No</th>
                             <th class="text-center">Nama Unit</th>
+                            <th class="text-center">Singkatan</th>
+                            {{-- <th class="text-center">Sub Unit</th> --}}
                             <th>Jabatan</th>
                             <th>Eselon</th>
                             <th>Pimpinan</th>
@@ -89,30 +91,64 @@
                 @php
                     $no=1;
                 @endphp
-				@foreach ($unit as $item)
-                    <tbody>
-                        <tr>
-                            <td class="text-center">{{$no}}</td>
-                            <td class="text-center">{{$item->nama_unit}}</td>
-                            <td><div style="font-weight: 600;font-size:14px;">{{$item->nama_jabatan}}</div></td>
-                            <td><div style="font-weight: 600;font-size:14px;">{{$item->eselon}}</div></td>
-                            <td><div style="font-weight: 600;font-size:14px;">{{isset($item->sdm->nama_lengkap) ? $item->sdm->nama_lengkap : 'n/a'}}</div></td>
+                <tbody>
+                @foreach ($d_unit[0] as $im)
+
+                    <tr>
+                            <td class="text-left"><b>{{$no}}</b></td>
+                            <td class=""><b>{{$im->nama_unit}}</b></td>
+                            <td class="text-center"><b>{{$im->singkatan}}</b></td>
+                            {{-- <td class=""><b>{{$im->sub_unit=='-' ? $im->nama_unit : $im->sub_unit}}</b></td> --}}
+                            <td><div style="font-weight: 600;font-size:14px;">{{$im->nama_jabatan}}</div></td>
+                            <td><div style="font-weight: 600;font-size:14px;">{{$im->eselon}}</div></td>
+                            <td><div style="font-weight: 600;font-size:14px;">{{isset($im->sdm->nama_lengkap) ? $im->sdm->nama_lengkap : 'n/a'}}</div></td>
                             <td>
                                 <div style="width:100px">
-                                    <a class="btn btn-xs btn-info btn-edit" data-toggle="modal" data-target="#modalubah" data-value="{{ $item->id }}">
-                                        <i class="icon-pencil"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-xs btn-danger btn-delete" data-toggle="modal" data-target="#modalhapus" data-value="{{ $item->id }}">
-                                        <i class="icon-trash"></i>
-                                    </a>  
-                                </div> 
+                                    <a class="btn btn-xs btn-info btn-edit" data-toggle="modal" data-target="#modalubah" data-value="{{ $im->id }}">
+                                                <i class="icon-pencil"></i>
+                                            </a>
+                                    <a href="#" class="btn btn-xs btn-danger btn-delete" data-toggle="modal" data-target="#modalhapus" data-value="{{ $im->id }}">
+                                    <i class="icon-trash"></i>
+                                </a>  
+                            </div> 
                             </td>
                         </tr>
-                    </tbody>
-                @php
-                    $no++;
-                @endphp
+                        @php
+                            $nosub=1.;
+                        @endphp
+                    @if (isset($d_unit[$im->id]))
+                        @foreach ($d_unit[$im->id] as $item)
+                            
+                                <tr>
+                                    <td class="text-right">{{$no}}.{{$nosub}}</td>
+                                    <td class="">{{$item->nama_unit}}</td>
+                                    <td class="text-center">{{$item->singkatan}}</td>
+                                    {{-- <td class="">{{$item->sub_unit=='-' ? $item->nama_unit : $item->sub_unit}}</td> --}}
+                                    <td><div>{{$item->nama_jabatan}}</div></td>
+                                    <td><div>{{$item->eselon}}</div></td>
+                                    <td><div>{{isset($item->sdm->nama_lengkap) ? $item->sdm->nama_lengkap : 'n/a'}}</div></td>
+                                    <td>
+                                        <div style="width:100px">
+                                            <a class="btn btn-xs btn-info btn-edit" data-toggle="modal" data-target="#modalubah" data-value="{{ $item->id }}">
+                                                <i class="icon-pencil"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-xs btn-danger btn-delete" data-toggle="modal" data-target="#modalhapus" data-value="{{ $item->id }}">
+                                                <i class="icon-trash"></i>
+                                            </a>  
+                                        </div> 
+                                    </td>
+                                </tr>
+                            
+                        @php
+                            $nosub++;
+                        @endphp
+                        @endforeach
+                    @endif
+                    @php
+                        $no++;
+                    @endphp
                 @endforeach
+                </tbody>
                 </table>
             </div>
         </div>
@@ -133,8 +169,23 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">	
+                                    <label>Subdit</label>
+                                    <select name="id_parent" id="" palceholder="Nama Unit" class="selectbox" style="">
+                                        <option value="0">-Pilih Subdit-</option>
+                                        @foreach ($unit as $item)
+                                            @if($item->id_parent==0)
+                                                <option value="{{$item->id}}">{{$item->nama_unit}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>  
+                                <div class="form-group">	
                                     <label>Nama Unit</label>
-                                    <input type="text" name="nama_unit" class="form-control" placeholder="Nama Unit">
+                                    <input type="text" name="nama_unit" class="form-control" placeholder="Nama Unit/Subdit/Seksi">  
+                                </div>  
+                                <div class="form-group">	
+                                    <label>Singkatan</label>
+                                    <input type="text" name="singkatan" class="form-control" placeholder="Singkatan">  
                                 </div>  
                                 <div class="form-group">	
                                     <label>Nama Jabatan</label>
@@ -193,9 +244,24 @@
 						<div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">	
-                                    <label>Nama Unit</label>
-                                    <input type="text" name="nama_unit" id="nama_unit"  class="form-control" placeholder="Nama Unit">
+                                    <label>Subdit</label>
+                                    <select name="id_parent" id="id_parent" palceholder="Nama Unit" class="selectbox" style="">
+                                        <option value="0">-Pilih Subdit-</option>
+                                        @foreach ($unit as $item)
+                                            @if($item->id_parent==0)
+                                                <option value="{{$item->id}}">{{$item->nama_unit}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
                                 </div>  
+                                <div class="form-group">	
+                                    <label>Nama Unit</label>
+                                    <input type="text" name="nama_unit" id="nama_unit" class="form-control" placeholder="Nama Unit/Subdit/Seksi">  
+                                </div>  
+                                <div class="form-group">	
+                                    <label>Singkatan</label>
+                                    <input type="text" name="singkatan" id="singkatan" class="form-control" placeholder="Singkatan">  
+                                </div> 
                                 <div class="form-group">	
                                     <label>Nama Jabatan</label>
                                     <input type="text" name="nama_jabatan" id="nama_jabatan" class="form-control" placeholder="Nama Jabatan">
@@ -271,14 +337,18 @@
             var id = $(this).data('value')
 			var eselon = $("select#eselon").selectpicker();
 			var id_eselon = $("select#id_eselon").selectpicker();
+			var parent = $("select#id_parent").selectpicker();
             $.ajax({
                 url: "{{ url('master-unit') }}/"+id+"/edit",
                 success: function(res) {
 					$('#form-update').attr('action', "{{ url('master-unit') }}/"+id)
 					$('#nama_unit').val(res.nama_unit);
                     $('#nama_jabatan').val(res.nama_jabatan);
+                    $('#singkatan').val(res.singkatan);
+                    // $('#sub_unit').val(res.sub_unit);
                     id_eselon.selectpicker('val', res.id_eselon);
                     eselon.selectpicker('val', res.eselon);
+                    parent.selectpicker('val', res.id_parent);
                    
                 }
             })
@@ -291,6 +361,7 @@
         })
         
     });
+    
     </script>
 <style>
 .selectbox {
