@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\IKU;
 use App\Models\Unit;
+use App\Models\Provinsi;
 use App\Models\RealisasiAnggaran;
 use App\Models\KegiatanFisik;
+use Session;
 class HomeController extends Controller
 {
     /**
@@ -26,7 +28,50 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard.index');
+        $iku=IKU::where('status',0)->with('unit')->orderBy('tahun','desc')->orderBy('id_unit')->get();
+        $d_iku=$dt_iku=array();
+        $total_anggaran=array();
+        foreach($iku as $k=>$v)
+        {
+            $d_iku[]=$v;
+            $dt_iku[$v->unit->id_parent][$v->id_unit][]=$v->anggaran;
+            $total_anggaran[$v->unit->id_parent][$v->sasaran]=$v->anggaran;
+        }
+        // dd($total_anggaran);
+        $unit=Unit::all();
+        $d_unit=array();
+        
+        foreach($unit as $k=>$v)
+        {
+            $d_unit[$v->id_parent][$v->id]=$v;
+            
+        }
+
+        $realisasi=RealisasiAnggaran::with('iku')->get();
+        $d_realisasi=$jlh=array();
+        foreach($realisasi as $k=>$v)
+        {
+            $d_realisasi[$v->id_iku][]=$v;
+            $jlh[$v->iku->id_unit][]=$v->jumlah;
+        }
+
+        $realisasifisik=KegiatanFisik::with('iku')->get();
+        $keg=$jlh_fisik=$d_realisasi_fisik=array();
+        foreach($realisasifisik as $k=>$v)
+        {
+            $d_realisasi_fisik[$v->id_iku][]=$v;
+            $keg[str_slug($v->kegiatan)][]=$v;
+            $jlh_fisik[$v->iku->unit->id_parent][trim($v->iku->satuan)][]=$v->jumlah;
+        }
+        return view('pages.dashboard.index')
+                ->with('iku',$d_iku)
+                ->with('dt_iku',$dt_iku)
+                ->with('total_anggaran',$total_anggaran)
+                ->with('unit',$d_unit)
+                ->with('realisasi',$d_realisasi)
+                ->with('jlh_fisik',$jlh_fisik)
+                ->with('keg',$keg)
+                ->with('jumlah',$jlh);
     }
 
     public function program_persebaran()
@@ -41,9 +86,43 @@ class HomeController extends Controller
     {
         return view('pages.program.grafik');
     }
-    public function sebaran_peta()
+    public function sebaran_peta($tahun=null)
     {
-        return view('pages.peta.peta');
+        $provinsi=Provinsi::all();
+        if($tahun==null)
+            $tahun=date('Y');
+        else    
+            $tahun=$tahun;
+
+        $url='https://pskbs.id/crawler/data_result/'.$tahun;
+        $json = json_decode(file_get_contents($url), true);
+        $jumlah_kejadian=$json['jumlah_kejadian'];
+        $jumlah_meninggal=$json['jumlah_korban']['meninggal'];
+        $jumlah_luka=$json['jumlah_korban']['luka'];
+        $jumlah_kerusakan=$json['jumlah_kerusakan']['bangunan_rusak'];
+        $dprovinsi=$json['provinsi'];
+        $kejadian_provinsi=$json['kejadian_provinsi'];
+
+        // Session::set('dprovinsi',$dprovinsi);
+        // Session::set('kejadian_provinsi',$kejadian_provinsi);
+        session(['dprovinsi'=>$dprovinsi]);
+        session(['kejadian_provinsi'=>$kejadian_provinsi]);
+        $total=0;
+        foreach($jumlah_kejadian as $k=>$v)
+        {
+            $total+=count($v);
+        }
+
+        return view('pages.peta.peta')
+                ->with('provinsi',$provinsi)
+                ->with('dprovinsi',$dprovinsi)
+                ->with('kejadian_provinsi',$kejadian_provinsi)
+                ->with('tahun',$tahun)
+                ->with('total',$total)
+                ->with('jumlah_meninggal',array_sum($jumlah_meninggal))
+                ->with('jumlah_luka',array_sum($jumlah_luka))
+                ->with('jumlah_kerusakan',array_sum($jumlah_kerusakan))
+                ->with('jumlah_kejadian',$jumlah_kejadian);
     }
     public function anggaran()
     {
@@ -154,4 +233,23 @@ class HomeController extends Controller
     {
         return response()->download(storage_path('app/'.$dir.'/'.$file));
     }
+
+    function konversi($dec,$kode)
+    {
+        $dd=DDtoDMS($dec,$kode);
+        echo $dd;
+    }
+    function getpeta($tahun)
+    {
+        // echo $tahun;
+        $provinsi=Provinsi::all();
+        $dprovinsi=Session::get('dprovinsi');
+        $kejadian_provinsi=Session::get('kejadian_provinsi');
+        return view('pages.peta.map')
+            ->with('provinsi',$provinsi)
+            ->with('dprovinsi',$dprovinsi)
+            ->with('kejadian_provinsi',$kejadian_provinsi)
+            ->with('tahun',$tahun);
+    }
+
 }

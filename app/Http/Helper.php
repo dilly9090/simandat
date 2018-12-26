@@ -33,4 +33,24 @@ function autonumber($num)
     else
         return $num;
 }
+function DDtoDMS($dec,$kode)
+{
+    // Converts decimal format to DMS ( Degrees / minutes / seconds ) 
+    $vars = explode(".",$dec);
+    $deg = $vars[0];
+    $tempma = "0.".$vars[1];
+
+    $mn = $tempma * 60;
+    list($l1,$l2)=explode('.',$mn);
+
+    $s=$l2*60;
+    $ss=strtok($s,'.');
+    $tempma = $tempma * 3600;
+    $min = floor($tempma / 60);
+    $sec = $tempma - ($min*60);
+
+    // return array("deg"=>$deg,"min"=>$min,"sec"=>$sec);
+    return $deg.'°'.$l1."'0".number_format($sec,1)."''".$kode;
+    // return $deg.'°'.$l1."'".$ss."''".$kode;
+}
 ?>

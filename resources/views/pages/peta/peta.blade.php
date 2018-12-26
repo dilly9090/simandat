@@ -46,13 +46,23 @@
 			<div class="panel-heading">
                 <h5 class="panel-title" style="float:left;">
                     Persebaran Bencana Sosial</h5>
-                    <select name="tahun" id="tahun" palceholder="Tahun" class="selectbox" style="float:left;">
-                        <option>- Tahun -</option>
+                    <select name="tahun" id="tahun" palceholder="Tahun" class="selectbox" style="float:left;" onchange="peta(this.value)">
+                        <option value=0>- Tahun -</option>
                         @for ($i = (date('Y')-5); $i <= date('Y'); $i++)
-                            @if ($i==date('Y'))
-                                <option selected="selected">{{$i}}</option>
+                            @if ($tahun!=null)
+                                @if ($i==$tahun)
+                                    <option selected="selected">{{$i}}</option>
+                                @else
+                                    <option>{{$i}}</option>
+                                @endif
+
                             @else
-                                <option>{{$i}}</option>
+                                @if ($i==date('Y'))
+                                    <option selected="selected">{{$i}}</option>
+                                @else
+                                    <option>{{$i}}</option>
+                                @endif
+
                             @endif
                         @endfor
                     </select>
@@ -60,9 +70,9 @@
 			</div>
 			<div class="container-fluid">
 				<div class="row" style="padding:20px;">
-                    <div class="map-container" id="mapsvg" ></div>
+                    <div class="map-container" id="mapsvg"></div>
                 </div>
-				<div class="row" style="padding:20px;">
+				{{-- <div class="row" style="padding:20px;">
                     <div class="text-center col-md-12">
                         <span class="label bg-pink-400" style="padding:5px 20px;">Konflik Sosial</span>
                         &nbsp;&nbsp;&nbsp;
@@ -72,22 +82,26 @@
                         &nbsp;&nbsp;&nbsp;
                         <span class="label bg-info-300" style="padding:5px 20px;">Huru-hara</span>
                     </div>
-                </div>
+                </div> --}}
                 <div class="row" style="margin-bottom:20px;">
                     <div class="col-md-4">
                         <div style="background:#004aaa;min-height:200px;margin:0 10px 0 20px;">
                             <div class="row">
-                                <div class="col-md-12 text-center" style="color:white"><h3>Jumlah Kejadian</h3></div>
+                                <div class="col-md-12 text-center" style="color:white"><h3>Jumlah Kejadian Tahun {{$tahun}}</h3></div>
                             </div>
                             <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">12.560</div> 
-                                <div class="col-md-6" style="color:white">kejadian </div>
+                                <div class="col-md-4 text-right" style="color:white">{{number_format($total,0,',','.')}}</div> 
+                                <div class="col-md-7" style="color:white">kejadian </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">4.879</div> 
-                                <div class="col-md-6" style="color:white">konflik ekonomi </div>
-                            </div>
-                            <div class="row">
+                            @foreach ($jumlah_kejadian as $idx=>$item)   
+                                @if (count($item)!=0)
+                                    <div class="row">
+                                        <div class="col-md-4 text-right" style="color:white">{{number_format(count($item),0,',','.')}}</div> 
+                                        <div class="col-md-7" style="color:white">{{ucwords($idx)}}</div>
+                                    </div>
+                                @endif                             
+                            @endforeach
+                            {{-- <div class="row">
                                 <div class="col-md-5 text-right" style="color:white">5.939</div> 
                                 <div class="col-md-6" style="color:white">konflik sospol </div>
                             </div>
@@ -98,20 +112,20 @@
                             <div class="row">
                                 <div class="col-md-5 text-right" style="color:white">2452</div> 
                                 <div class="col-md-6" style="color:white">kebakaran</div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div style="background:#00963e;min-height:200px;margin:0 10px 0 10px;">
                             <div class="row">
-                                <div class="col-md-12 text-center" style="color:white"><h3>Jumlah Korban</h3></div>
+                                <div class="col-md-12 text-center" style="color:white"><h3>Jumlah Korban Tahun {{$tahun}}</h3></div>
                             </div>
                             <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">857</div> 
+                                <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_meninggal,0,',','.')}}</div> 
                                 <div class="col-md-6" style="color:white">Meninggal </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">5.368</div> 
+                                <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_luka,0,',','.')}}</div> 
                                 <div class="col-md-6" style="color:white">Luka-luka</div>
                             </div>
                         </div>
@@ -119,16 +133,13 @@
                     <div class="col-md-4">
                         <div style="background:#ffc300;min-height:200px;margin:0 20px 0 10px;">
                             <div class="row">
-                                <div class="col-md-12 text-center" style="color:white"><h3>Bangunan Rusak</h3></div>
+                                <div class="col-md-12 text-center" style="color:white"><h3>Bangunan Rusak Tahun {{$tahun}}</h3></div>
                             </div>
                             <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">258</div> 
-                                <div class="col-md-6" style="color:white">Rusak Berat </div>
+                                <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_kerusakan,0,',','.')}}</div> 
+                                <div class="col-md-6" style="color:white">Jumlah Kerusakan </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">1.857</div> 
-                                <div class="col-md-6" style="color:white">Rusak Ringan</div>
-                            </div>
+                           
                         </div>
                     </div>
                     
@@ -140,20 +151,32 @@
 @endsection
 
 @section('footscript')
-    <link href="{{asset('css/mapsvg.css')}}" rel="stylesheet">
-    <link href="{{asset('css/nanoscroller.css')}}" rel="stylesheet">
-    <script src="{{asset('js/jquery.mousewheel.js')}}"></script>
-    <script src="{{asset('js/nanoscroller.js')}}"></script>
-    <script src="{{asset('js/map.svg.js')}}"></script>
+<link href="{{asset('css/mapsvg.css')}}" rel="stylesheet">
+<link href="{{asset('css/nanoscroller.css')}}" rel="stylesheet">
+<script src="{{asset('js/jquery.mousewheel.js')}}"></script>
+<script src="{{asset('js/nanoscroller.js')}}"></script>
+<script src="{{asset('js/map.svg.js')}}"></script>
 <script type="text/javascript">
     var APP_URL="{{url('/')}}";
     jQuery(document).ready(function(){
-    jQuery("#mapsvg").mapSvg({width: 792.54596,height: 317,colors: {baseDefault: "#000000",background: "#fffff",selected: 40,hover: 21,directory: "#fafafa",status: {},base: "#195fc7"},viewBox: [0,-0.16802999999998747,792.54596,317],cursor: "pointer",tooltips: {mode: "title",on: false,priority: "local",position: "bottom-right"},gauge: {on: false,labels: {low: "low",high: "high"},colors: {lowRGB: {r: 85,g: 0,b: 0,a: 1},highRGB: {r: 238,g: 0,b: 0,a: 1},low: "#550000",high: "#ee0000",diffRGB: {r: 153,g: 0,b: 0,a: 0}},min: 0,max: false},source: APP_URL+"/indonesia.svg",title: "Indonesia",responsive: true});
+        
+        loadpeta();
 
-    $(".selectbox").selectBoxIt({
-        autoWidth: false
+
+        $(".selectbox").selectBoxIt({
+            autoWidth: false
+        });
     });
-});
+
+    function loadpeta()
+    {
+        var tahun=$('#tahun').val();
+        $('#mapsvg').load(APP_URL+'/getpeta/'+tahun);
+    }
+    function peta(tahun)
+    {
+        location.href=APP_URL+'/sebaran-peta/'+tahun;
+    }
 </script>
 <style>
 .selectboxit-container {

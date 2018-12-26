@@ -9,7 +9,7 @@ class SdmController extends Controller
 {
     public function index()
     {
-        $sdm=Sdm::orderBy('nama_lengkap')->get();
+        $sdm=Sdm::orderBy('golongan','desc')->get();
         return view('pages.sdm.index')->with('sdm',$sdm);
     }
 

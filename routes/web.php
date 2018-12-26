@@ -21,7 +21,7 @@ Auth::routes();
 Route::get('program-persebaran','HomeController@program_persebaran')->middleware('auth');
 Route::get('program-tabel','HomeController@program_tabel')->middleware('auth');
 Route::get('program-grafik','HomeController@program_grafik')->middleware('auth');
-Route::get('sebaran-peta','HomeController@sebaran_peta')->middleware('auth');
+Route::get('sebaran-peta/{tahun?}','HomeController@sebaran_peta')->middleware('auth');
 Route::get('anggaran','HomeController@anggaran')->middleware('auth');
 Route::get('master','HomeController@master')->middleware('auth');
 Route::get('iku','HomeController@iku')->middleware('auth');
@@ -35,6 +35,7 @@ Route::get('logout',function(){
 });
 
 Route::resource('regulasi','RegulasiController')->middleware('auth');
+Route::post('editurutan/{id}','RegulasiController@editurutan');
 Route::resource('sarpras','SaranaPrasaranaController')->middleware('auth');
 Route::resource('sdm','SdmController')->middleware('auth');
 Route::resource('surat-masuk','SuratMasukController')->middleware('auth');
@@ -51,6 +52,9 @@ Route::post('disposisi-surat-keluar','DisposisiController@diposisi_surat_keluar'
 
 Route::get('unduh-file/{dir}/{file}','HomeController@unduh');
 Route::get('iku-by-unit/{idunit}','IKUController@iku_by_unit');
+
+Route::get('konversi/{dec}/{kode}','HomeController@konversi');
+Route::get('getpeta/{tahun}','HomeController@getpeta');
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
      
