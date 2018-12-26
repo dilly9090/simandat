@@ -96,12 +96,12 @@ class HomeController extends Controller
 
         $url='https://pskbs.id/crawler/data_result/'.$tahun;
         $json = json_decode(file_get_contents($url), true);
-        $jumlah_kejadian=$json['jumlah_kejadian'];
-        $jumlah_meninggal=$json['jumlah_korban']['meninggal'];
-        $jumlah_luka=$json['jumlah_korban']['luka'];
-        $jumlah_kerusakan=$json['jumlah_kerusakan']['bangunan_rusak'];
-        $dprovinsi=$json['provinsi'];
-        $kejadian_provinsi=$json['kejadian_provinsi'];
+        $jumlah_kejadian=isset($json['jumlah_kejadian']) ? $json['jumlah_kejadian'] : array();
+        $jumlah_meninggal=iasset($json['jumlah_korban']['meninggal']) ? $json['jumlah_korban']['meninggal'] : array();
+        $jumlah_luka=iasset($json['jumlah_korban']['luka']) ? $json['jumlah_korban']['luka'] : array();
+        $jumlah_kerusakan=iasset($json['jumlah_kerusakan']['bangunan_rusak']) ? $json['jumlah_kerusakan']['bangunan_rusak'] : array();
+        $dprovinsi=iasset($json['provinsi']) ? $json['provinsi'] : array();
+        $kejadian_provinsi=iasset($json['kejadian_provinsi']) ? $json['kejadian_provinsi'] : array();
 
         // Session::set('dprovinsi',$dprovinsi);
         // Session::set('kejadian_provinsi',$kejadian_provinsi);
