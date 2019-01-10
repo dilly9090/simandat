@@ -102,8 +102,8 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    @if (isset($json[$item->name]))
-                                        <span style="font-weight: 600;font-size:11px;" class="label label-danger">0
+                                    @if (isset($json[$item->name]['meninggal']))
+                                        <span style="font-weight: 600;font-size:11px;" data-title="Jumlah Korban Meninggal" class="label label-danger tooltips">{{array_sum($json[$item->name]['meninggal'])}}
                                         </span>
                                         <span class="label label-danger"><i class="icon-users"></i></span>
                                     @else
@@ -111,8 +111,8 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    @if (isset($json[$item->name]))
-                                        <span style="font-weight: 600;font-size:11px;" class="label label-success">0
+                                    @if (isset($json[$item->name]['luka']))
+                                        <span style="font-weight: 600;font-size:11px;" data-title="Jumlah Korban Luka-Luka" class="label label-success tooltips">{{array_sum($json[$item->name]['luka'])}}
                                         </span>
                                         <span class="label label-success"><i class="icon-users"></i></span>
                                     @else
@@ -120,8 +120,8 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    @if (isset($json[$item->name]))
-                                        <span style="font-weight: 600;font-size:11px;" class="label label-info">0
+                                    @if (isset($json[$item->name]['bangunan_rusak']))
+                                        <span style="font-weight: 600;font-size:11px;" data-title="Jumlah Bangunan Rusak" class="label label-info tooltips">{{array_sum($json[$item->name]['bangunan_rusak'])}}
                                         </span>
                                         <span class="label label-info"><i class="icon-office"></i></span>
                                     @else

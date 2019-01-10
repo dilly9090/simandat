@@ -1,7 +1,7 @@
 <div class="navbar navbar-inverse bg-indigo">
 		<div class="navbar-header text-center" style="text-align:center">
             <a class="navbar-brand text-center" href="{{ url('/home')}}" style="padding:4px 0px;margin:0 auto !important;text-align:center">
-                <img src="assets/images/simandat-logo-header.png" alt="" style="margin-top:0px;height:45px;margin-left:20px;">
+                <img src="{{asset('assets/images/simandat-logo-header.png')}}" alt="" style="margin-top:0px;height:45px;margin-left:20px;">
             </a>
 
 			<ul class="nav navbar-nav visible-xs-block">
