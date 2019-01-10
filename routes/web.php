@@ -22,6 +22,7 @@ Route::get('program-persebaran','HomeController@program_persebaran')->middleware
 Route::get('program-tabel','HomeController@program_tabel')->middleware('auth');
 Route::get('program-grafik','HomeController@program_grafik')->middleware('auth');
 Route::get('sebaran-peta/{tahun?}','HomeController@sebaran_peta')->middleware('auth');
+Route::get('sebaran-table/{tahun?}','HomeController@sebaran_tabel')->middleware('auth');
 Route::get('anggaran','HomeController@anggaran')->middleware('auth');
 Route::get('master','HomeController@master')->middleware('auth');
 Route::get('iku','HomeController@iku')->middleware('auth');
@@ -42,6 +43,9 @@ Route::resource('surat-masuk','SuratMasukController')->middleware('auth');
 Route::resource('surat-keluar','SuratKeluarController')->middleware('auth');
 Route::resource('master-unit','UnitController')->middleware('auth');
 Route::resource('master-user','UserController')->middleware('auth');
+Route::get('user-data-detail/{iduser}','UserController@user_data_detail')->middleware('auth');
+Route::post('user-data-detail-simpan/{iduser}','UserController@user_data_detail_simpan')->middleware('auth');
+
 Route::resource('data-iku','IKUController')->middleware('auth');
 Route::get('data-iku-delete/{id}','IKUController@destroy')->middleware('auth');
 Route::resource('data-anggaran','RealisasiAnggaranController')->middleware('auth');

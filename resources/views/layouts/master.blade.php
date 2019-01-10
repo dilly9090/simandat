@@ -26,7 +26,9 @@
 		<div class="page-content">
 
 			<!-- Main sidebar -->
-			@include('includes.sidebar')
+			@if (Auth::user()->level==0)
+				@include('includes.sidebar')
+			@endif
 			<!-- /main sidebar -->
 
 

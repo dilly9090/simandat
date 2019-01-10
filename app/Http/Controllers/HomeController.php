@@ -86,6 +86,29 @@ class HomeController extends Controller
     {
         return view('pages.program.grafik');
     }
+    public function sebaran_tabel($tahun=null)
+    {
+        $provinsi=Provinsi::all();
+        if($tahun==null)
+            $tahun=date('Y');
+        else    
+            $tahun=$tahun;
+
+        $url='https://pskbs.id/crawler/data_result/'.$tahun;
+        $json = json_decode(file_get_contents($url), true);
+        if(count($json)==0)
+            $d_json=array();
+        else
+            $d_json=$json['provinsi'];
+        // return $json;
+        $kejadian=array();
+        return view('pages.peta.tabel')
+                ->with('tahun',$tahun)
+                ->with('kejadian',$kejadian)
+                ->with('provinsi',$provinsi)
+                ->with('json',$d_json);
+                
+    }
     public function sebaran_peta($tahun=null)
     {
         $provinsi=Provinsi::all();

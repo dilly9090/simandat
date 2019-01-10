@@ -42,27 +42,13 @@
 
 <div class="row">
     
-    @if (Session::has('errors'))
+    @if (Session::has('success'))
 		<div class="col-md-12">
-			<div class="alert alert-danger alert-dismissible" role="alert">
+			<div class="alert alert-info alert-dismissible" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-				<strong>Oops, terjadi kesalahan. </strong>
+				<strong>Informaso. </strong>
 				<ul style="font-size:12px;margin-top:5px;">
-					@if ($errors->has('name'))
-						<li> &nbsp; - {{ $errors->first('name') }}</li>
-					@endif
-					@if ($errors->has('email'))
-						<li> &nbsp; - {{ $errors->first('email') }}</li>
-					@endif
-					@if ($errors->has('flag'))
-						<li> &nbsp; - {{ $errors->first('flag') }}</li>
-					@endif
-					@if ($errors->has('level'))
-						<li> &nbsp; - {{ $errors->first('level') }}</li>
-					@endif
-					@if ($errors->has('password'))
-						<li> &nbsp; - {{ $errors->first('password') }}</li>
-					@endif
+					<li> &nbsp; - {{ Session::get('success') }}</li>
 				</ul>
 			</div>
 		</div>
@@ -74,7 +60,7 @@
 		<!-- Traffic sources -->
 		<div class="panel panel-flat" style="min-height:350px !important;">
 			<div class="panel-heading">
-                <h3 class="panel-title">Daftar Unit</h3>   
+                <h3 class="panel-title">Daftar User</h3>   
                 
             </div>
             <div class="container-fluid">
@@ -85,6 +71,7 @@
                             <th class="text-center">Nama</th>
                             <th>Email</th>
                             <th>Level</th>
+                            <th>Data User</th>
                             <th>Status</th>
                             <th>#</th>
                         </tr>
@@ -99,6 +86,9 @@
                             <td class="text-center">{{$item->name}}</td>
                             <td>{{$item->email}}</td>
                             <td>{{$level[$item->level]}}</td>
+                            <td>
+                                <a href="javascript:userdata({{$item->id}})" class="btn btn-xs btn-info" data-toggle="tooltip" data-title="Detail Data User"><i class="icon-eye"></i></a>
+                            </td>
                             <td>
                             @if ($item->flag==1)
                                 <span class="label label-info">Aktif</span>
@@ -146,7 +136,9 @@
                                     <select name="name" id="" palceholder="Nama" class="selectbox" style="">
                                         <option>- Pilih -</option>
                                         @foreach($sdm  as $k =>$v)
-                                            <option value="{{$v->nama_lengkap}}">{{$v->nip}} - {{$v->nama_lengkap}}</option>
+                                            @if (!in_array($v->email,$us))
+                                                <option value="{{$v->nama_lengkap}}">{{$v->nip}} - {{$v->nama_lengkap}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>  
@@ -213,7 +205,9 @@
                                     <select name="name" id="name" palceholder="Nama" class="selectbox" style="">
                                         <option>- Pilih -</option>
                                         @foreach($sdm  as $k =>$v)
-                                            <option value="{{$v->nama_lengkap}}">{{$v->nip}} - {{$v->nama_lengkap}}</option>
+                                            @if (!in_array($v->email,$us))
+                                                <option value="{{$v->nama_lengkap}}">{{$v->nip}} - {{$v->nama_lengkap}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>  
@@ -280,11 +274,35 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="modaldetail" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Detail Data User</h4>
+				</div>
+				<div class="modal-body">
+					<div id="detail"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-dismiss="modal" class="btn btn-default">Batal</button>
+					<button type="button" onclick="$('#form-update-detail').submit()" class="btn btn-info" style="cursor:pointer;">Simpan Data Detail</button>
+				</div>
+			</div>
+		</div>
+	</div>
 @endsection
 @section('footscript')
+    <script type="text/javascript" src="{{asset('assets/js/plugins/pickers/pickadate/picker.js')}}"></script>
+    <script type="text/javascript" src="{{asset('assets/js/plugins/pickers/pickadate/picker.date.js')}}"></script>
+    <script type="text/javascript" src="{{asset('assets/js/plugins/pickers/pickadate/picker.time.js')}}"></script>
+    <script type="text/javascript" src="{{asset('assets/js/plugins/pickers/pickadate/legacy.js')}}"></script>
+    <script src="{{asset('vendor/laravel-filemanager/js/lfm.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/plugins/forms/selects/bootstrap_select.min.js')}}"></script>
+
     <script>
     $(document).ready(function(){
+        
         $('#table').DataTable();
         $(".selectbox").selectpicker({
             
@@ -315,11 +333,33 @@
         })
         
     });
+    $('[data-toggle=tooltip]').tooltip();
+    function userdata(iduser)
+    {
+        $('#detail').load('{{url("user-data-detail")}}/'+iduser,function(){
+            $(".pickadate").pickadate({
+                format : 'dd-mm-yyyy',
+                formatSubmit: 'yyyy-mm-dd',
+                selectMonths: true,
+                selectYears: true,
+                min: [1950,1,1],
+                max: [2010,12,31],
+                selectYears: 40
+            });
+            $(".selectbox").selectpicker();
+            $('#lfm').filemanager('image', {prefix: '{{url("/")}}/laravel-filemanager'});
+        });
+        $('#modaldetail').modal('show');
+    }
     </script>
 <style>
 .selectbox {
     width: 100% !important;
 }
-
+input[type=text],select,textarea
+{
+    font-weight: 600;
+    /* color: blueviolet */
+}
 </style>
 @endsection

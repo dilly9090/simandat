@@ -19,7 +19,13 @@
 										<li><a href="{{url('program-grafik')}}">Grafik</a></li>
 									</ul>
 								</li> --}}
-								<li class="{{$path=='sebaran-peta' ? 'active' : ''}}"><a href="{{url('sebaran-peta')}}"><i class="icon-map4"></i> <span>Peta</span></a></li>
+								<li class="{{strpos($path,'sebaran')!==false ? 'active' : ''}}">
+									<a href="#"><i class="icon-stack"></i> <span>Persebaran</span></a>
+									<ul>
+										<li class="{{$path=='sebaran-peta' ? 'active' : ''}}"><a href="{{url('sebaran-peta')}}"><span>Peta</span></a></li>
+										<li class="{{$path=='sebaran-table' ? 'active' : ''}}"><a href="{{url('sebaran-table')}}"><span>Table</span></a></li>
+									</ul>
+								</li>
 								<li class="{{$path=='iku' ? 'active' : ''}}"><a href="{{url('iku')}}"><i class="icon-stack2"></i> <span>IKU</span></a></li>
 								<li class="{{$path=='anggaran' ? 'active' : ''}}"><a href="{{url('anggaran')}}"><i class="icon-wallet"></i> <span>Realisasi Anggaran</span></a></li>
 								<li class="{{$path=='kegiatan-fisik' ? 'active' : ''}}"><a href="{{url('kegiatan-fisik')}}"><i class="icon-notebook"></i> <span>Realisasi Kegiatan/Fisik</span></a></li>

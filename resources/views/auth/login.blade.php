@@ -49,7 +49,7 @@
 
                     <!-- Advanced login -->
                     <div class="row">
-                        <div style="text-align:center;width:100%">
+                        <div style="text-align:center;width:100%;margin-top:-20px;">
 							<div style="" class="div-logo">
 								<div class="login-logo">
 									<img src="{{asset('assets/images/simandat-logo.png')}}" style="" >
@@ -58,7 +58,7 @@
                                     <div>
                                         <span style="" class="text-simandat">SIMANDAT</span> <span style="" class="text-pskbs">PSKBS</span>
                                     </div>
-                                    <div style="margin-top:-10px;">
+                                    <div style="margin-top:-20px;">
                                         <span style="" class="text-sim">Sistem Informasi Manajemen Data Terpadu</span>
                                     </div>
                                 </div>
@@ -99,11 +99,11 @@
                             <div style="" class="div-logo-kemensos">
                                 <img src="{{asset('assets/images/kemensos_logo.png')}}" style="" class="logo-kemensos">
                                 <div style="">
+										<div>
+											<span style="font-size:14px;font-weight:600">Direktorat Jenderal Perlindungan Jaminan Sosial</span>
+										</div>
                                     <div>
-                                        <span style="font-size:14px;font-weight:600">Direktorat Perlindungan Sosial Korban Bencana Sosial</span>
-                                    </div>
-                                    <div>
-                                        <span style="font-size:14px;">Direktorat Jenderal Perlindungan Jaminan Sosial</span>
+                                        <span style="font-size:14px;">Direktorat Perlindungan Sosial Korban Bencana Sosial</span>
                                     </div>
                                 </div>
                             </div>
@@ -186,7 +186,7 @@
 }
 .div-logo
 {
-	margin:10px auto -10px auto !important;width:700px;padding-bottom:5px;
+	margin:0px auto -10px auto !important;width:700px;padding-bottom:5px;
 }
 .logo-text
 {

@@ -45,7 +45,7 @@
 		<div class="panel panel-flat" style="min-height:350px !important;">
 			<div class="panel-heading">
                 <h5 class="panel-title" style="float:left;">
-                    Persebaran Bencana Sosial</h5>
+                    Peta Persebaran Bencana Sosial</h5>
                     <select name="tahun" id="tahun" palceholder="Tahun" class="selectbox" style="float:left;" onchange="peta(this.value)">
                         <option value=0>- Tahun -</option>
                         @for ($i = (date('Y')-5); $i <= date('Y'); $i++)
