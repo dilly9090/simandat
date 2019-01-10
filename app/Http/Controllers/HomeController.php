@@ -306,6 +306,7 @@ class HomeController extends Controller
         else
         {
             $kejadian_provinsi=Session::get('kejadian_provinsi');
+            $dprovinsi=Session::get('dprovinsi');
             return view('pages.peta.map')
                 ->with('provinsi',$provinsi)
                 ->with('dprovinsi',$dprovinsi)
