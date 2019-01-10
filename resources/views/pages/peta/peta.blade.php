@@ -83,67 +83,69 @@
                         <span class="label bg-info-300" style="padding:5px 20px;">Huru-hara</span>
                     </div>
                 </div> --}}
-                <div class="row" style="margin-bottom:20px;">
-                    <div class="col-md-4">
-                        <div style="background:#004aaa;min-height:200px;margin:0 10px 0 20px;">
-                            <div class="row">
-                                <div class="col-md-12 text-center" style="color:white"><h3>Jumlah Kejadian Tahun {{$tahun}}</h3></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 text-right" style="color:white">{{number_format($total,0,',','.')}}</div> 
-                                <div class="col-md-7" style="color:white">kejadian </div>
-                            </div>
-                            @foreach ($jumlah_kejadian as $idx=>$item)   
-                                @if (count($item)!=0)
-                                    <div class="row">
-                                        <div class="col-md-4 text-right" style="color:white">{{number_format(count($item),0,',','.')}}</div> 
-                                        <div class="col-md-7" style="color:white">{{ucwords($idx)}}</div>
-                                    </div>
-                                @endif                             
-                            @endforeach
-                            {{-- <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">5.939</div> 
-                                <div class="col-md-6" style="color:white">konflik sospol </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">49</div> 
-                                <div class="col-md-6" style="color:white">teror </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">2452</div> 
-                                <div class="col-md-6" style="color:white">kebakaran</div>
-                            </div> --}}
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div style="background:#00963e;min-height:200px;margin:0 10px 0 10px;">
-                            <div class="row">
-                                <div class="col-md-12 text-center" style="color:white"><h3>Jumlah Korban Tahun {{$tahun}}</h3></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_meninggal,0,',','.')}}</div> 
-                                <div class="col-md-6" style="color:white">Meninggal </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_luka,0,',','.')}}</div> 
-                                <div class="col-md-6" style="color:white">Luka-luka</div>
+                @if ($tahun!=2017)
+                    <div class="row" style="margin-bottom:20px;">
+                        <div class="col-md-4">
+                            <div style="background:#004aaa;min-height:200px;margin:0 10px 0 20px;">
+                                <div class="row">
+                                    <div class="col-md-12 text-center" style="color:white"><h3>Jumlah Kejadian Tahun {{$tahun}}</h3></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 text-right" style="color:white">{{number_format($total,0,',','.')}}</div> 
+                                    <div class="col-md-7" style="color:white">kejadian </div>
+                                </div>
+                                @foreach ($jumlah_kejadian as $idx=>$item)   
+                                    @if (count($item)!=0)
+                                        <div class="row">
+                                            <div class="col-md-4 text-right" style="color:white">{{number_format(count($item),0,',','.')}}</div> 
+                                            <div class="col-md-7" style="color:white">{{ucwords($idx)}}</div>
+                                        </div>
+                                    @endif                             
+                                @endforeach
+                                {{-- <div class="row">
+                                    <div class="col-md-5 text-right" style="color:white">5.939</div> 
+                                    <div class="col-md-6" style="color:white">konflik sospol </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 text-right" style="color:white">49</div> 
+                                    <div class="col-md-6" style="color:white">teror </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 text-right" style="color:white">2452</div> 
+                                    <div class="col-md-6" style="color:white">kebakaran</div>
+                                </div> --}}
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div style="background:#ffc300;min-height:200px;margin:0 20px 0 10px;">
-                            <div class="row">
-                                <div class="col-md-12 text-center" style="color:white"><h3>Bangunan Rusak Tahun {{$tahun}}</h3></div>
+                        <div class="col-md-4">
+                            <div style="background:#00963e;min-height:200px;margin:0 10px 0 10px;">
+                                <div class="row">
+                                    <div class="col-md-12 text-center" style="color:white"><h3>Jumlah Korban Tahun {{$tahun}}</h3></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_meninggal,0,',','.')}}</div> 
+                                    <div class="col-md-6" style="color:white">Meninggal </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_luka,0,',','.')}}</div> 
+                                    <div class="col-md-6" style="color:white">Luka-luka</div>
+                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_kerusakan,0,',','.')}}</div> 
-                                <div class="col-md-6" style="color:white">Jumlah Kerusakan </div>
-                            </div>
-                           
                         </div>
+                        <div class="col-md-4">
+                            <div style="background:#ffc300;min-height:200px;margin:0 20px 0 10px;">
+                                <div class="row">
+                                    <div class="col-md-12 text-center" style="color:white"><h3>Bangunan Rusak Tahun {{$tahun}}</h3></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_kerusakan,0,',','.')}}</div> 
+                                    <div class="col-md-6" style="color:white">Jumlah Kerusakan </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                        
                     </div>
-                    
-                </div>
+                @endif
             </div>
         </div>
     </div>

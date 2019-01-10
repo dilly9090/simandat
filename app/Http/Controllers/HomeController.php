@@ -94,19 +94,35 @@ class HomeController extends Controller
         else    
             $tahun=$tahun;
 
-        $url='https://pskbs.id/crawler/data_result/'.$tahun;
-        $json = json_decode(file_get_contents($url), true);
-        if(count($json)==0)
-            $d_json=array();
-        else
-            $d_json=$json['provinsi'];
+        
         // return $json;
         $kejadian=array();
-        return view('pages.peta.tabel')
+
+        if($tahun==2017)
+        {
+            $kat=kategori_2017();
+            $kejadian=$kat['jenis'];
+            $jumlah=$kat['jumlah'];
+            return view('pages.peta.table-2017')
+                ->with('tahun',$tahun)
+                ->with('kejadian',$kejadian)
+                ->with('provinsi',$provinsi)
+                ->with('jumlah',$jumlah);
+        }
+        else
+        {
+            $url='https://pskbs.id/crawler/data_result/'.$tahun;
+            $json = json_decode(file_get_contents($url), true);
+            if(count($json)==0)
+                $d_json=array();
+            else
+                $d_json=$json['provinsi'];
+            return view('pages.peta.tabel')
                 ->with('tahun',$tahun)
                 ->with('kejadian',$kejadian)
                 ->with('provinsi',$provinsi)
                 ->with('json',$d_json);
+        }
                 
     }
     public function sebaran_peta($tahun=null)
@@ -266,13 +282,36 @@ class HomeController extends Controller
     {
         // echo $tahun;
         $provinsi=Provinsi::all();
-        $dprovinsi=Session::get('dprovinsi');
-        $kejadian_provinsi=Session::get('kejadian_provinsi');
-        return view('pages.peta.map')
-            ->with('provinsi',$provinsi)
-            ->with('dprovinsi',$dprovinsi)
-            ->with('kejadian_provinsi',$kejadian_provinsi)
-            ->with('tahun',$tahun);
+        $dprovinsi=array();
+        if($tahun==2017)
+        {
+            $kat=kategori_2017();
+            $jlh=array();
+            foreach($kat['jumlah'] as $prov=>$v)
+            {
+                $dprovinsi[$prov]=$prov;
+                foreach($v as $idx=>$vl)
+                {
+                    if(isset($kat['jenis'][$idx]))
+                        $jlh[$prov][$kat['jenis'][$idx]]=$vl;
+                }
+            }
+            // return $jlh;
+            return view('pages.peta.map-2017')
+                ->with('provinsi',$provinsi)
+                ->with('dprovinsi',$dprovinsi)
+                ->with('kejadian_provinsi',$jlh)
+                ->with('tahun',$tahun);
+        }
+        else
+        {
+            $kejadian_provinsi=Session::get('kejadian_provinsi');
+            return view('pages.peta.map')
+                ->with('provinsi',$provinsi)
+                ->with('dprovinsi',$dprovinsi)
+                ->with('kejadian_provinsi',$kejadian_provinsi)
+                ->with('tahun',$tahun);
+        }
     }
 
 }
