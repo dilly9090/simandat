@@ -189,9 +189,12 @@
                                                             <td class="text-right">Rp.{{rupiah($tmm->anggaran)}}</td>
                                                             <td>
                                                                 <div style="width:100px;">
-                                                                    <a class="btn btn-xs btn-info btn-edit" data-toggle="modal" data-target="#modalubah" data-value="{{ $tmm->id }}">
+                                                                    <a class="btn btn-xs btn-info btn-edit" href="javascript:edit('{{ $tmm->id }}')">
                                                                         <i class="icon-pencil"></i>
                                                                     </a>
+                                                                    {{-- <a class="btn btn-xs btn-info btn-edit" data-toggle="modal" data-target="#modalubah" data-value="{{ $tmm->id }}">
+                                                                        <i class="icon-pencil"></i>
+                                                                    </a> --}}
                                                                     <a href="javascript:modalhapus({{$tmm->id}})" class="btn btn-xs btn-danger btn-delete">
                                                                         <i class="icon-trash"></i>
                                                                     </a> 
@@ -212,6 +215,66 @@
                         @endif
 
                     @endforeach
+                    <div class="panel">
+                            <div class="panel-heading bg-primary">
+                                <h6 class="panel-title">
+                                    <a data-toggle="collapse" class="{{$idx!=1 ? 'collapsed' : ''}}" data-parent="#accordion-control-right" href="#accordion-control-right-group_0"><b>Tanpa Kategori</b> - <i>No Unit</i> <b style="color:black">( {{isset($iku[0]) ? count($iku[0]) : 0}} )</b></a>
+                                </h6>
+                            </div>
+                            <div id="accordion-control-right-group_0" class="panel-collapse collapse {{$no==1 ? 'in' :''}}">
+                                <div class="panel-body">
+                                    <table class="table table-basic table-striped table-bordered" id="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">No</th>
+                                                <th class="text-center">Tahun</th>
+                                                <th>Sasaran</th>
+                                                <th>Indikator Kinerja</th>
+                                                <th>Target</th>
+                                                <th>Anggaran</th>
+                                                <th>#</th>
+                                            </tr>
+                                        </thead>
+                                    @php
+                                        $no=1;
+                                    @endphp
+                                    @if ( !isset($iku[0]) )
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="7" class="text-center">Data Belum Tersedia</td>
+                                            </tr>
+                                        </tbody>
+                                    @else
+                                        @foreach ($iku[0] as $tm)
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center">{{$no}}</td>
+                                                    <td class="text-center">{{$tm->tahun}}</td>
+                                                    <td>{{$tm->sasaran}}</td>
+                                                    <td>{{$tm->indikator}}</td>
+                                                    <td>{{rupiah($tm->target)}} {{$tm->satuan}}</td>
+                                                    <td class="text-right">Rp.{{rupiah($tm->anggaran)}}</td>
+                                                    <td>
+                                                        <div style="width:100px;">
+                                                        <a class="btn btn-xs btn-info btn-edit" href="javascript:edit('{{$tm->id}}')">
+                                                                <i class="icon-pencil"></i>
+                                                            </a>
+                                                            <a href="javascript:modalhapus({{$tm->id}})" class="btn btn-xs btn-danger btn-delete">
+                                                                <i class="icon-trash"></i>
+                                                            </a> 
+                                                        </div>  
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        @php
+                                            $no++;
+                                        @endphp
+                                        @endforeach
+                                    @endif
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
         </div>
         
     </div>
@@ -240,7 +303,7 @@
                                 <div class="form-group">	
                                     <label>Unit Kerja</label>
                                     <select name="id_unit" id="" palceholder="Unit" class="selectbox" style="">
-                                        <option>- Pilih -</option>
+                                        <option value="0">- Pilih Unit (Optional) -</option>
                                         @foreach ($unit[0] as $item)
                                             <option value="{{$item->id}}">{{$item->nama_unit}}</option>
                                             @if (isset($unit[$item->id]))
@@ -412,6 +475,25 @@
         $(".selectbox").selectpicker({
             
         });
+        function edit(id)
+        {
+            var id_unit = $("select#id_unit").selectpicker();
+            $.ajax({
+                url: "{{ url('data-iku') }}/"+id+"/edit",
+                success: function(res) {
+					$('#form-update').attr('action', "{{ url('data-iku') }}/"+id)
+					$('#tahun').val(res.tahun)
+                    $('#sasaran').val(res.sasaran);
+                    $('#indikator').val(res.indikator);
+                    $('#target').val(res.target);
+                    $('#kegiatan').val(res.kegiatan);
+                    $('#anggaran').val(res.anggaran);
+                    $('#satuan').val(res.satuan);
+                    id_unit.selectpicker('val', res.id_unit);
+                    $('#modalubah').modal('show');
+                }
+            })
+        }
         // $('#table').DataTable();
 		// binding data to modal edit
         $('#table').on('click', '.btn-edit', function(){
