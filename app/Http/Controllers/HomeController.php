@@ -138,6 +138,7 @@ class HomeController extends Controller
         $jumlah_kejadian=isset($json['jumlah_kejadian']) ? $json['jumlah_kejadian'] : array();
         $jumlah_meninggal=isset($json['jumlah_korban']['meninggal']) ? $json['jumlah_korban']['meninggal'] : array();
         $jumlah_luka=isset($json['jumlah_korban']['luka']) ? $json['jumlah_korban']['luka'] : array();
+        $jumlah_pengungsi=isset($json['jumlah_korban']['jumlah_pengungsi']) ? $json['jumlah_korban']['jumlah_pengungsi'] : array();
         $jumlah_kerusakan=isset($json['jumlah_kerusakan']['bangunan_rusak']) ? $json['jumlah_kerusakan']['bangunan_rusak'] : array();
         $dprovinsi=isset($json['provinsi']) ? $json['provinsi'] : array();
         $kejadian_provinsi=isset($json['kejadian_provinsi']) ? $json['kejadian_provinsi'] : array();
@@ -160,6 +161,7 @@ class HomeController extends Controller
                 ->with('total',$total)
                 ->with('jumlah_meninggal',array_sum($jumlah_meninggal))
                 ->with('jumlah_luka',array_sum($jumlah_luka))
+                ->with('jumlah_pengungsi',array_sum($jumlah_pengungsi))
                 ->with('jumlah_kerusakan',array_sum($jumlah_kerusakan))
                 ->with('jumlah_kejadian',$jumlah_kejadian);
     }

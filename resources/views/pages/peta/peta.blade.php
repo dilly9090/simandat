@@ -129,6 +129,10 @@
                                     <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_luka,0,',','.')}}</div> 
                                     <div class="col-md-6" style="color:white">Luka-luka</div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-5 text-right" style="color:white">{{number_format($jumlah_pengungsi,0,',','.')}}</div> 
+                                    <div class="col-md-6" style="color:white">Jumlah Pengungsi</div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-4">
