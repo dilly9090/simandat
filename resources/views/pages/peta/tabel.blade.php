@@ -76,13 +76,14 @@
                                 <th rowspan="2" class="text-center">No</th>
                                 <th rowspan="2" class="text-center">PROVINSI</th>
                                 <th rowspan="2">Jumlah Insiden</th>
-                                <th class="text-center" colspan="3">Dampak</th>
+                                <th class="text-center" colspan="4">Dampak</th>
                                 
                                 <th rowspan="2">Detail</th>
                             </tr>
                             <tr>
                                 <th class="text-center">Jumlah Korban <br>Meninggal</th>
                                 <th class="text-center">Jumlah Korban <br>Luka-luka</th>
+                                <th class="text-center">Jumlah <br>Pengungsi</th>
                                 <th class="text-center">Jumlah Bangunan<br>Rusak</th>
                             </tr>
                         </thead>
@@ -113,6 +114,15 @@
                                 <td class="text-center">
                                     @if (isset($json[$item->name]['luka']))
                                         <span style="font-weight: 600;font-size:11px;" data-title="Jumlah Korban Luka-Luka" class="label label-success tooltips">{{array_sum($json[$item->name]['luka'])}}
+                                        </span>
+                                        <span class="label label-success"><i class="icon-users"></i></span>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if (isset($json[$item->name]['jlh_pengungsi']))
+                                        <span style="font-weight: 600;font-size:11px;" data-title="Jumlah Pengungsi" class="label label-success tooltips">{{array_sum($json[$item->name]['jlh_pengungsi'])}}
                                         </span>
                                         <span class="label label-success"><i class="icon-users"></i></span>
                                     @else
